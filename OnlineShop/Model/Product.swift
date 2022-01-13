@@ -8,35 +8,47 @@
 import Foundation
 import GoogleAPIClientForREST
 
-struct Product {
+class ProductType {
+    
     var name: String
-    var price: Int?
-    var description: String?
-    var imgName: String?
-    var memorySize: String?
-    var color: String?
-    var products: [Product]?
+    var imgName: String {
+        return name
+    }
+    var products: [Product]
     
     init(name: String, imgName: String, products: [Product]) {
         self.name = name
-        self.imgName = imgName
+        //self.imgName = imgName
         self.products = products
     }
+        
+}
+
+class Product: ProductType {
     
-    init(name: String, price: Int, description: String, imgName: String, memorySize: String, color: String) {
-        self.name = name
+    var price: Int
+    var memorySize: String
+    var color: String
+    var description: String?
+    
+    override var imgName: String {
+        return self.name
+    }
+
+    init(name: String, price: Int, description: String, imgName: String, memorySize: String, color: String, products: [Product], type: String) {
+       
         self.price = price
         self.description = description
-        self.imgName = imgName
         self.memorySize = memorySize
         self.color = color
+        super.init(name: name, imgName: imgName, products: products)
     }
 
 }
 
 extension Product {
     static func getProducts() -> [Product] {
-    
+        //return [Product.init(name: <#T##String#>, price: <#T##Int#>, description: <#T##String#>, imgName: <#T##String#>, memorySize: <#T##String#>, color: <#T##String#>, products: <#T##[Product]#>, type: <#T##String#>)]
      return [Product]()
     }
 }
