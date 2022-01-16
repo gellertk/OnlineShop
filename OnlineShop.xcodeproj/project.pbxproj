@@ -14,6 +14,7 @@
 		CBC17B2F278B2A5000339DE1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CBC17B2D278B2A5000339DE1 /* LaunchScreen.storyboard */; };
 		CBC17B37278B319C00339DE1 /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC17B36278B319C00339DE1 /* Product.swift */; };
 		CBC17B39278B42FF00339DE1 /* ProductList.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC17B38278B42FF00339DE1 /* ProductList.swift */; };
+		CBD8CAED2793273F00D04571 /* GoogleApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD8CAEC2793273F00D04571 /* GoogleApiClient.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -41,6 +42,7 @@
 		CBC17B30278B2A5000339DE1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CBC17B36278B319C00339DE1 /* Product.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
 		CBC17B38278B42FF00339DE1 /* ProductList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductList.swift; sourceTree = "<group>"; };
+		CBD8CAEC2793273F00D04571 /* GoogleApiClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleApiClient.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,6 +124,7 @@
 			isa = PBXGroup;
 			children = (
 				CBC17B36278B319C00339DE1 /* Product.swift */,
+				CBD8CAEC2793273F00D04571 /* GoogleApiClient.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -255,6 +258,7 @@
 				CBC17B37278B319C00339DE1 /* Product.swift in Sources */,
 				CBC17B23278B2A4B00339DE1 /* AppDelegate.swift in Sources */,
 				CBC17B25278B2A4B00339DE1 /* SceneDelegate.swift in Sources */,
+				CBD8CAED2793273F00D04571 /* GoogleApiClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

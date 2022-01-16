@@ -6,19 +6,19 @@
 //
 
 import Foundation
-import GoogleAPIClientForREST
+
 
 class ProductType {
     
     var name: String
-    var imgName: String {
-        return name
-    }
-    var products: [Product]
+    var colors: [String]?
+    var imgName: String
+    var memorys: [Int]?
+    var products: [ProductType]
     
-    init(name: String, imgName: String, products: [Product]) {
+    init(name: String, imgName: String, products: [ProductType]) {
         self.name = name
-        //self.imgName = imgName
+        self.imgName = imgName
         self.products = products
     }
         
@@ -27,29 +27,17 @@ class ProductType {
 class Product: ProductType {
     
     var price: Int
-    var memorySize: String
+    var memory: String
     var color: String
     var description: String?
-    
-    override var imgName: String {
-        return self.name
-    }
 
-    init(name: String, price: Int, description: String, imgName: String, memorySize: String, color: String, products: [Product], type: String) {
-       
+    init(type: ProductType?, name: String, imgName: String, price: Int, description: String, memory: String, color: String) {
         self.price = price
         self.description = description
-        self.memorySize = memorySize
+        self.memory = memory
         self.color = color
-        super.init(name: name, imgName: imgName, products: products)
+        super.init(name: name, imgName: imgName, products: [ProductType]())
     }
 
-}
-
-extension Product {
-    static func getProducts() -> [Product] {
-        //return [Product.init(name: <#T##String#>, price: <#T##Int#>, description: <#T##String#>, imgName: <#T##String#>, memorySize: <#T##String#>, color: <#T##String#>, products: <#T##[Product]#>, type: <#T##String#>)]
-     return [Product]()
-    }
 }
 
