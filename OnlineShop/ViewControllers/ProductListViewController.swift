@@ -10,7 +10,7 @@ import UIKit
 class ProductListViewController: UIViewController {
     
     lazy var productsView: UIView = {
-        let v = ProductList.init()
+        let v = ProductList.init(rootVC: self)
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
