@@ -8,13 +8,13 @@
 import Foundation
 import GoogleAPIClientForREST
 
-var productTypes = [ProductType]()
+var itemTree = [ItemGroup]()
 
 class GoogleApiClient: NSObject {
     
-    var productList = [ProductType]()
+    var itemList = [ItemGroup]()
     
-    func fillProductsTree() {
+    func getItems() {
         let service = GTLRSheetsService()
         let spreadsheetId = "1DiuUKftlliXP-y6TS8qHruHyxlWesbcUhamzK6bG42s"
         service.apiKey = "AIzaSyCKgh7usvAbBPAHT-PaIQPsIA2g9g8AEjI"
@@ -34,20 +34,37 @@ class GoogleApiClient: NSObject {
         fillProductType(currentType: nil,values: productTypesValues, rowIndex: &firstRowIndex)
     }
     
-    func fillProductType(currentType: ProductType?, values: [[String]], rowIndex: inout Int) {
+    func fillProductType(currentType: ItemGroup?, values: [[String]], rowIndex: inout Int) {
         while rowIndex < values.indices.count {
             let parent = values[rowIndex][0]
-            let currentType = ProductType.init(name: values[rowIndex][1], imgName: values[rowIndex][2], products: [ProductType]())
-            productList.append(currentType)
-            if let parentType = productList.first(where: {$0.name == parent}) {
-                parentType.products.append(currentType)
+            let currentType = ItemGroup.init(name: values[rowIndex][1], imgName: values[rowIndex][2], products: [ItemGroup]())
+            itemList.append(currentType)
+            if let parentType = itemList.first(where: {$0.name == parent}) {
+                parentType.items.append(currentType)
             } else {
-                productTypes.append(currentType)
+                itemTree.append(currentType)
             }
             rowIndex += 1
-            fillProductType(currentType: currentType, values: values, rowIndex: &rowIndex)
+            //fillProductType(currentType: currentType, values: values, rowIndex: &rowIndex)
         }
+        
+        var asd = 1
     }
+    
+//    func fillProductType(currentType: ProductType?, values: [[String]], rowIndex: inout Int) {
+//        while rowIndex < values.indices.count {
+//            let parent = values[rowIndex][0]
+//            let currentType = ProductType.init(name: values[rowIndex][1], imgName: values[rowIndex][2], products: [ProductType]())
+//            productList.append(currentType)
+//            if let parentType = productList.first(where: {$0.name == parent}) {
+//                parentType.products.append(currentType)
+//            } else {
+//                productTypes.append(currentType)
+//            }
+//            rowIndex += 1
+//            fillProductType(currentType: currentType, values: values, rowIndex: &rowIndex)
+//        }
+//    }
     
 }
 

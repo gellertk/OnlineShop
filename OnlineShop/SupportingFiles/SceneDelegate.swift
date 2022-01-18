@@ -17,7 +17,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         let window = UIWindow(windowScene: windowScene)
         let navController = UINavigationController()
-        let vc = ProductListViewController()
+        let vc = MenuViewController()
         navController.viewControllers = [vc]
         window.rootViewController = navController
         self.window = window

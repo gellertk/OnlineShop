@@ -7,36 +7,37 @@
 
 import Foundation
 
-
-class ProductType {
+class ItemGroup {
     
     var name: String
     var colors: [String]?
     var imgName: String
     var memorys: [Int]?
-    var products: [ProductType]
+    var items: [ItemGroup]
     
-    init(name: String, imgName: String, products: [ProductType]) {
+    init(name: String, imgName: String, products: [ItemGroup]) {
         self.name = name
         self.imgName = imgName
-        self.products = products
+        self.items = products
     }
         
 }
 
-class Product: ProductType {
+class Item: ItemGroup {
     
     var price: Int
     var memory: String
     var color: String
     var description: String?
+    var count: Int
 
-    init(type: ProductType?, name: String, imgName: String, price: Int, description: String, memory: String, color: String) {
+    init(type: ItemGroup?, name: String, imgName: String, price: Int, description: String, memory: String, color: String, count: Int) {
         self.price = price
         self.description = description
         self.memory = memory
         self.color = color
-        super.init(name: name, imgName: imgName, products: [ProductType]())
+        self.count = count
+        super.init(name: name, imgName: imgName, products: [ItemGroup]())
     }
 
 }

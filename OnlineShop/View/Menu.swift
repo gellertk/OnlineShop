@@ -1,21 +1,15 @@
 //
-//  ProductList.swift
+//  Menu.swift
 //  OnlineShop
 //
-//  Created by Кирилл  Геллерт on 09.01.2022.
+//  Created by Кирилл  Геллерт on 18.01.2022.
 //
 
 import UIKit
 
-class ProductList: UIView {
+class Menu: UIView {
     
-    //    lazy var sgmntProductType: UISegmentedControl = {
-    //       let sgmnt = UISegmentedControl(items: [""])
-    //       return sgmnt
-    //    }()
-    
-    let rootVC: ProductListViewController
-    //let navController
+    var items: [ItemGroup]?
     
     lazy var btnToCatalog: UIButton = {
         var btn = UIButton()
@@ -26,15 +20,13 @@ class ProductList: UIView {
     }()
     
     @objc func didTapCatalogBtn(sender: UIButton) {
-        let vc = ProductListViewController()
-        //rootVC.present(vc, animated: true, completion: nil)
+        let vc = CatalogViewController(items: itemTree)
         if let navController = window?.rootViewController as? UINavigationController {
             navController.pushViewController(vc, animated: true)
         }
     }
     
-    init(rootVC: ProductListViewController) {
-        self.rootVC = rootVC
+    init(rootVC: MenuViewController) {
         super.init(frame: CGRect.zero)
         backgroundColor = .lightGray
         setupView()
@@ -60,6 +52,5 @@ class ProductList: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    
+
 }

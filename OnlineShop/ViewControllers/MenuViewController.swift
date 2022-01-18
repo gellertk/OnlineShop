@@ -1,22 +1,23 @@
 //
-//  ViewController.swift
+//  MenuViewController.swift
 //  OnlineShop
 //
-//  Created by Кирилл  Геллерт on 09.01.2022.
+//  Created by Кирилл  Геллерт on 18.01.2022.
 //
 
 import UIKit
 
-class ProductListViewController: UIViewController {
-    
+class MenuViewController: UIViewController {
+
     lazy var productsView: UIView = {
-        let v = ProductList.init(rootVC: self)
+        let v = Menu.init(rootVC: self)
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        GoogleApiClient().getItems()
         setupView()
     }
     
@@ -35,4 +36,3 @@ class ProductListViewController: UIViewController {
     }
 
 }
-
