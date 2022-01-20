@@ -11,41 +11,44 @@ class Menu: UIView {
     
     var items: [ItemGroup]?
     
-    lazy var btnToCatalog: UIButton = {
-        var btn = UIButton()
-        btn.setTitle("Каталог", for: .normal)
-        btn.addTarget(self, action: #selector(didTapCatalogBtn(sender:)), for: .touchUpInside)
-        btn.layer.cornerRadius = 1
-        return btn
+    lazy var catalogButton: UIButton = {
+        var button = UIButton()
+        button.setTitle("Каталог", for: .normal)
+        button.addTarget(self, action: #selector(didTapCatalogButton(sender:)), for: .touchUpInside)
+        button.layer.cornerRadius = 1
+        return button
     }()
     
-    @objc func didTapCatalogBtn(sender: UIButton) {
-        let vc = CatalogViewController(items: itemTree)
-        if let navController = window?.rootViewController as? UINavigationController {
-            navController.pushViewController(vc, animated: true)
+    @objc func didTapCatalogButton(sender: UIButton) {
+        guard itemTree.count > 0 else {
+            return
+        }
+        let catalogViewController = CatalogViewController(with: itemTree)
+        if let navigationController = window?.rootViewController as? UINavigationController {
+            navigationController.pushViewController(catalogViewController, animated: true)
         }
     }
     
-    init(rootVC: MenuViewController) {
+    init() {
         super.init(frame: CGRect.zero)
         backgroundColor = .lightGray
         setupView()
     }
     
     func setupView() {
-        [btnToCatalog].forEach { v in
-            v.translatesAutoresizingMaskIntoConstraints = false
-            addSubview(v)
+        [catalogButton].forEach { newView in
+            newView.translatesAutoresizingMaskIntoConstraints = false
+            addSubview(newView)
         }
         setupConstraints()
     }
     
     func setupConstraints() {
         NSLayoutConstraint.activate([
-            btnToCatalog.widthAnchor.constraint(equalToConstant: 100),
-            btnToCatalog.heightAnchor.constraint(equalToConstant: 44),
-            btnToCatalog.centerXAnchor.constraint(equalTo: centerXAnchor),
-            btnToCatalog.centerYAnchor.constraint(equalTo: centerYAnchor)
+            catalogButton.widthAnchor.constraint(equalToConstant: 100),
+            catalogButton.heightAnchor.constraint(equalToConstant: 44),
+            catalogButton.centerXAnchor.constraint(equalTo: centerXAnchor),
+            catalogButton.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
     }
     

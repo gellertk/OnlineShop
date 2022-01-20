@@ -9,8 +9,8 @@ import UIKit
 
 class MenuViewController: UIViewController {
 
-    lazy var productsView: UIView = {
-        let v = Menu.init(rootVC: self)
+    lazy var menuView: UIView = {
+        let v = Menu.init()
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
@@ -22,16 +22,16 @@ class MenuViewController: UIViewController {
     }
     
     func setupView() {
-        view.addSubview(productsView)
+        view.addSubview(menuView)
         setupConstraints()
     }
     
     func setupConstraints() {
         NSLayoutConstraint.activate([
-            productsView.topAnchor.constraint(equalTo: view.topAnchor),
-            productsView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            productsView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            productsView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            menuView.topAnchor.constraint(equalTo: view.topAnchor),
+            menuView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            menuView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            menuView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         ])
     }
 

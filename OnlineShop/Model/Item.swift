@@ -16,20 +16,16 @@ class ItemGroup {
     var items: [ItemGroup]
     var description: String?
     
-    init(name: String, imgName: String, products: [ItemGroup]) {
+    init(name: String, imgName: String, items: [ItemGroup]) {
         self.name = name
         self.imgName = imgName
-        self.items = products
+        self.items = items
     }
         
 }
 
-class Item {
+class Item: ItemGroup {
     
-    var name: String
-    var imgName: String {
-        return name
-    }
     var price: Int
     var memory: String
     var ram: String
@@ -37,13 +33,12 @@ class Item {
     var count: Int
 
     init(name: String, price: Int, memory: String, ram: String, color: String, count: Int) {
-        self.name = name
         self.price = price
         self.memory = memory
         self.ram = ram
         self.color = color
         self.count = count
-        //super.init(name: name, imgName: imgName, products: [ItemGroup]())
+        super.init(name: name, imgName: name, items: [ItemGroup]())
     }
 
 }

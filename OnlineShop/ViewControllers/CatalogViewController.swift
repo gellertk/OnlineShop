@@ -11,13 +11,13 @@ class CatalogViewController: UIViewController {
     
     let items: [ItemGroup]
     
-    lazy var productsView: UIView = {
-        let v = Catalog.init(rootVC: self, items: items)
+    lazy var catalogView: UIView = {
+        let v = Catalog.init(catalogViewController: self, items: items)
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
     
-    init(items: [ItemGroup]) {
+    init(with items: [ItemGroup]) {
         self.items = items
         super.init(nibName: nil, bundle: nil)
     }
@@ -32,16 +32,16 @@ class CatalogViewController: UIViewController {
     }
     
     func setupView() {
-        view.addSubview(productsView)
+        view.addSubview(catalogView)
         setupConstraints()
     }
     
     func setupConstraints() {
         NSLayoutConstraint.activate([
-            productsView.topAnchor.constraint(equalTo: view.topAnchor),
-            productsView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            productsView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            productsView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            catalogView.topAnchor.constraint(equalTo: view.topAnchor),
+            catalogView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            catalogView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            catalogView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         ])
     }
 

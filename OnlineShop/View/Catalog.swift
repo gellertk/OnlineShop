@@ -9,13 +9,13 @@ import UIKit
 
 class Catalog: UIView {
     
-    let rootVC: CatalogViewController
+    let catalogViewController: CatalogViewController
     var items: [ItemGroup]
-    var addedView = [UIView]()
-    var viewsItems = [UIView : [ItemGroup]]()
+    var addedViews: [UIView] = []
+    var viewsItems: [UIView: [ItemGroup]] = [:]
     
-    init(rootVC: CatalogViewController, items: [ItemGroup]) {
-        self.rootVC = rootVC
+    init(catalogViewController: CatalogViewController, items: [ItemGroup]) {
+        self.catalogViewController = catalogViewController
         self.items = items
         super.init(frame: CGRect.zero)
         backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
@@ -28,57 +28,70 @@ class Catalog: UIView {
     
     func setupView() {
         for index in items.indices {
-            let viewItem = UIView()
-            viewItem.translatesAutoresizingMaskIntoConstraints = false
-            viewItem.backgroundColor = .white
-            viewItem.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapItem(sender:))))
-            addSubview(viewItem)
-            viewsItems[viewItem] = items[index].items
+            let itemView = UIView()
+            itemView.translatesAutoresizingMaskIntoConstraints = false
+            itemView.backgroundColor = .white
+            itemView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapItem(sender:))))
+            addSubview(itemView)
+            viewsItems[itemView] = items[index].items
            
-            let lblItemName = UILabel()
-            lblItemName.text = items[index].name
-            lblItemName.translatesAutoresizingMaskIntoConstraints = false
-            addSubview(lblItemName)
+            let itemNameLabel = UILabel()
+            itemNameLabel.text = items[index].name
+            itemNameLabel.translatesAutoresizingMaskIntoConstraints = false
+            itemNameLabel.font = UIFont.systemFont(ofSize: 13)
+            addSubview(itemNameLabel)
             
-            let imgItem = UIImageView()
-            imgItem.image = UIImage(named: items[index].imgName)
-            imgItem.translatesAutoresizingMaskIntoConstraints = false
-            addSubview(imgItem)
-            setupConstraints(viewItem, imgItem, lblItemName, index)
-            addedView.append(viewItem)
+            let itemImageView = UIImageView()
+            itemImageView.image = UIImage(named: items[index].imgName)
+            itemImageView.translatesAutoresizingMaskIntoConstraints = false
+            itemImageView.contentMode = .scaleAspectFit
+            addSubview(itemImageView)
+            setupConstraints(itemView, itemImageView, itemNameLabel, index)
+            addedViews.append(itemView)
         }
     }
     
     @objc func didTapItem(sender: UITapGestureRecognizer) {
-        if let viewTapped = sender.view, let childItems = viewsItems[viewTapped] {
-            let vc = CatalogViewController(items: childItems)
-            if let navController = window?.rootViewController as? UINavigationController {
-                navController.pushViewController(vc, animated: true)
+        if let tappedView = sender.view, let childItems = viewsItems[tappedView] {
+            let catalogViewController = CatalogViewController(with: childItems)
+            if let navigationViewController = window?.rootViewController as? UINavigationController {
+                navigationViewController.pushViewController(catalogViewController, animated: true)
             }
         }
     }
     
-    func setupConstraints(_ viewItem: UIView, _ imgItem: UIImageView, _ lblItemName: UILabel, _ index: Int) {
-        let lastView = addedView.last ?? UIView()
-        let itemLeadingAnchor = (index % 2 == 1) ? centerXAnchor: leadingAnchor
-        let itemTrailingAnchor = (index % 2 == 1) ? trailingAnchor : centerXAnchor
+    func setupConstraints(_ itemView: UIView, _ itemImageView: UIImageView, _ itemNameLabel: UILabel, _ index: Int) {
+        let isLeftSideView = (index % 2 == 0)
+        let lastAddedView = addedViews.last ?? UIView()
+        let itemLeadingAnchor = isLeftSideView ? leadingAnchor : centerXAnchor
+        let itemTrailingAnchor = isLeftSideView ? centerXAnchor : trailingAnchor
         var constantTopAnchor = CGFloat(10)
         var itemTopAnchor = safeAreaLayoutGuide.topAnchor
 
         if index > 1 {
-            itemTopAnchor = index % 2 == 1 ? lastView.topAnchor : lastView.bottomAnchor
-            constantTopAnchor = index % 2 == 1 ? CGFloat(0) : constantTopAnchor
+            itemTopAnchor = isLeftSideView ? lastAddedView.bottomAnchor : lastAddedView.topAnchor
+            constantTopAnchor = isLeftSideView ? constantTopAnchor : CGFloat(0)
         }
         
         NSLayoutConstraint.activate([
-            viewItem.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width * 0.50),
-            viewItem.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height * 0.15),
-            viewItem.leadingAnchor.constraint(equalTo: itemLeadingAnchor, constant: 10),
-            viewItem.trailingAnchor.constraint(equalTo: itemTrailingAnchor, constant: -10),
-            viewItem.topAnchor.constraint(equalTo: itemTopAnchor, constant: constantTopAnchor),
+            itemView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width * 0.50),
+            itemView.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height * 0.15),
+            itemView.leadingAnchor.constraint(equalTo: itemLeadingAnchor, constant: 10),
+            itemView.trailingAnchor.constraint(equalTo: itemTrailingAnchor, constant: -10),
+            itemView.topAnchor.constraint(equalTo: itemTopAnchor, constant: constantTopAnchor),
             
-            lblItemName.centerYAnchor.constraint(equalTo: viewItem.centerYAnchor),
-            lblItemName.leadingAnchor.constraint(equalTo: viewItem.leadingAnchor, constant: 10),
+            itemNameLabel.centerYAnchor.constraint(equalTo: itemView.centerYAnchor),
+            itemNameLabel.leadingAnchor.constraint(equalTo: itemView.leadingAnchor, constant: 10),
+            itemNameLabel.trailingAnchor.constraint(equalTo: itemImageView.leadingAnchor, constant: -10),
+            
+            itemImageView.widthAnchor.constraint(equalToConstant: 70),
+            itemImageView.heightAnchor.constraint(equalToConstant: 70),
+            itemImageView.leadingAnchor.constraint(equalTo: itemNameLabel.trailingAnchor, constant: 10),
+            itemImageView.trailingAnchor.constraint(equalTo: itemView.trailingAnchor, constant: -20),
+            //itemImageView.centerYAnchor.constraint(equalTo: itemView.trailingAnchor, constant: -20),
+            
+            itemImageView.topAnchor.constraint(equalTo: itemView.topAnchor, constant: 15),
+            itemImageView.bottomAnchor.constraint(equalTo: itemView.bottomAnchor, constant: -15)
         ])
     }
     
