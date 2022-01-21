@@ -10,9 +10,9 @@ import UIKit
 class MenuViewController: UIViewController {
 
     lazy var menuView: UIView = {
-        let v = Menu.init()
-        v.translatesAutoresizingMaskIntoConstraints = false
-        return v
+        let view = MenuView.init()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
     }()
     
     override func viewDidLoad() {

@@ -12,12 +12,12 @@ class CatalogViewController: UIViewController {
     let items: [ItemGroup]
     
     lazy var catalogView: UIView = {
-        let v = Catalog.init(catalogViewController: self, items: items)
-        v.translatesAutoresizingMaskIntoConstraints = false
-        return v
+        let view = CatalogView.init(catalogViewController: self, items: items)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
     }()
     
-    init(with items: [ItemGroup]) {
+    init(items: [ItemGroup]) {
         self.items = items
         super.init(nibName: nil, bundle: nil)
     }

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class Menu: UIView {
+class MenuView: UIView {
     
     var items: [ItemGroup]?
     
@@ -23,7 +23,7 @@ class Menu: UIView {
         guard itemTree.count > 0 else {
             return
         }
-        let catalogViewController = CatalogViewController(with: itemTree)
+        let catalogViewController = CatalogViewController(items: itemTree)
         if let navigationController = window?.rootViewController as? UINavigationController {
             navigationController.pushViewController(catalogViewController, animated: true)
         }
