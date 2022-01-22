@@ -12,7 +12,7 @@ class CatalogViewController: UIViewController {
     let items: [ItemGroup]
     
     lazy var catalogView: UIView = {
-        let view = CatalogView.init(catalogViewController: self, items: items)
+        let view = CatalogView(catalogViewController: self, items: items)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()

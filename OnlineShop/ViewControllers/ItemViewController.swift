@@ -9,17 +9,17 @@ import UIKit
 
 class ItemViewController: UIViewController {
 
-    let items: ItemGroup
+    let currentItemGroup: ItemGroup
     let currentItem: Item
     
     lazy var itemView: UIView = {
-        let view = ItemView.init(itemGroup: items, currentItem: currentItem)
+        let view = ItemView(currentItemGroup: currentItemGroup, currentItem: currentItem)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
-    init(items: ItemGroup, currentItem: Item) {
-        self.items = items
+    init(currentItemGroup: ItemGroup, currentItem: Item) {
+        self.currentItemGroup = currentItemGroup
         self.currentItem = currentItem
         super.init(nibName: nil, bundle: nil)
     }

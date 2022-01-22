@@ -40,14 +40,14 @@ class GoogleApiClient: NSObject {
             }
             let rowValues = groupValues[rowIndex]
             let parent = rowValues[0]
-            let currentGroup = ItemGroup.init(name: rowValues[1], imgName: rowValues[2], items: [ItemGroup]())
+            let currentGroup = ItemGroup(name: rowValues[1], imgName: rowValues[2], items: [ItemGroup](), possibleMemory: rowValues[4].getPossibleMemoryCollection(), possibleColors: rowValues[3].getPossibleColorCollection())
             itemList.append(currentGroup)
             if let parentGroupName = itemList.first(where: {$0.name == parent}) {
                 parentGroupName.items.append(currentGroup)
                 if rowValues[6] == "TRUE" {
                     itemValues.forEach { row in
                         if row.contains(currentGroup.name) {
-                            currentGroup.items.append(Item.init(name: row[0], price: Int(row[2]) ?? 0, memory: row[3], ram: row[4], color: row[1], count: Int(row[5]) ?? 0))
+                            currentGroup.items.append(Item(name: row[0], price: Int(row[2]) ?? 0, memory: row[3], ram: row[4], color: row[1], count: Int(row[5]) ?? 0))
                         }
                     }
                 }

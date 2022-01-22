@@ -27,7 +27,7 @@ class CatalogView: UIView {
         backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
         translatesAutoresizingMaskIntoConstraints = false
         for index in items.indices {
-            let itemView = CatalogItemView.init(item: items[index], tag: index)
+            let itemView = ItemGroupView(item: items[index], tag: index)
             itemView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapCatalogItem(sender:))))
             addSubview(itemView)
             setupConstraints(itemView: itemView, index: index)
@@ -36,13 +36,14 @@ class CatalogView: UIView {
     
     @objc func didTapCatalogItem(sender: UITapGestureRecognizer) {
         if let tappedView = sender.view {
-            let childItems = items[tappedView.tag].items
+            let currentItemGroup = items[tappedView.tag]
             var viewControllerToOpen = UIViewController()
-            //TODO: Open right vc
-            if let firstItem = childItems.first, firstItem is Item {
-                viewControllerToOpen = ItemViewController(items: childItems, currentItem: firstItem)
+            if let firstItem = currentItemGroup.items.first,
+               firstItem is Item,
+               let firstItem = firstItem as? Item {
+                viewControllerToOpen = ItemViewController(currentItemGroup: currentItemGroup, currentItem: firstItem)
             } else {
-                viewControllerToOpen = CatalogViewController(items: childItems)
+                viewControllerToOpen = CatalogViewController(items: currentItemGroup.items)
             }
             if let navigationViewController = window?.rootViewController as? UINavigationController {
                 navigationViewController.pushViewController(viewControllerToOpen, animated: true)

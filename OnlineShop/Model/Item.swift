@@ -10,18 +10,27 @@ import Foundation
 class ItemGroup {
     
     var name: String
-    var colors: [String]?
+    var possibleColors: [String]?
     var imgName: String
-    var memorys: [Int]?
-    var items: [ItemGroup]
+    var possibleMemory: [String]?
+    var possibleRam: [String]?
     var description: String?
+    var items: [ItemGroup]
     
-    init(name: String, imgName: String, items: [ItemGroup]) {
+//    init(name: String, imgName: String, items: [ItemGroup]) {
+//        self.name = name
+//        self.imgName = imgName
+//        self.items = items
+//    }
+    
+    init(name: String, imgName: String, items: [ItemGroup], possibleMemory: [String], possibleColors: [String]) {
         self.name = name
         self.imgName = imgName
         self.items = items
+        self.possibleMemory = possibleMemory
+        self.possibleColors = possibleColors
     }
-        
+    
 }
 
 class Item: ItemGroup {
@@ -38,7 +47,7 @@ class Item: ItemGroup {
         self.ram = ram
         self.color = color
         self.count = count
-        super.init(name: name, imgName: name, items: [ItemGroup]())
+        super.init(name: name, imgName: "\(name)\(color)", items: [ItemGroup](), possibleMemory: [String](), possibleColors: [String]())
     }
 
 }

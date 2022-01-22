@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CatalogItemView: UIView {
+class ItemGroupView: UIView {
     
     var item: ItemGroup
 

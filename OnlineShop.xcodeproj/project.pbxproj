@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		CB152039279B1C9D009BD006 /* CatalogItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB152038279B1C9D009BD006 /* CatalogItemView.swift */; };
+		CB152039279B1C9D009BD006 /* ItemGroupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB152038279B1C9D009BD006 /* ItemGroupView.swift */; };
 		CB15203B279B4D2C009BD006 /* ItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB15203A279B4D2C009BD006 /* ItemView.swift */; };
 		CB15203D279B69C1009BD006 /* ItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB15203C279B69C1009BD006 /* ItemViewController.swift */; };
 		CB6A8AB0279720820035C4D5 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6A8AAF279720820035C4D5 /* MenuView.swift */; };
@@ -19,6 +19,8 @@
 		CBC17B2F278B2A5000339DE1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CBC17B2D278B2A5000339DE1 /* LaunchScreen.storyboard */; };
 		CBC17B37278B319C00339DE1 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC17B36278B319C00339DE1 /* Item.swift */; };
 		CBC17B39278B42FF00339DE1 /* CatalogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC17B38278B42FF00339DE1 /* CatalogView.swift */; };
+		CBCB2FBA279C1BFD00395EFB /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBCB2FB9279C1BFD00395EFB /* StringExtension.swift */; };
+		CBCB2FBD279C3FA600395EFB /* ColorSegmentedControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBCB2FBC279C3FA600395EFB /* ColorSegmentedControlView.swift */; };
 		CBD8CAED2793273F00D04571 /* GoogleApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD8CAEC2793273F00D04571 /* GoogleApiClient.swift */; };
 /* End PBXBuildFile section */
 
@@ -38,7 +40,7 @@
 /* Begin PBXFileReference section */
 		0AB75A90941D75B3B783697A /* Pods-OnlineShop.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OnlineShop.debug.xcconfig"; path = "Target Support Files/Pods-OnlineShop/Pods-OnlineShop.debug.xcconfig"; sourceTree = "<group>"; };
 		C657ADF5AE136E7BD0C9F68D /* Pods-OnlineShop.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OnlineShop.release.xcconfig"; path = "Target Support Files/Pods-OnlineShop/Pods-OnlineShop.release.xcconfig"; sourceTree = "<group>"; };
-		CB152038279B1C9D009BD006 /* CatalogItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogItemView.swift; sourceTree = "<group>"; };
+		CB152038279B1C9D009BD006 /* ItemGroupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemGroupView.swift; sourceTree = "<group>"; };
 		CB15203A279B4D2C009BD006 /* ItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemView.swift; sourceTree = "<group>"; };
 		CB15203C279B69C1009BD006 /* ItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemViewController.swift; sourceTree = "<group>"; };
 		CB6A8AAF279720820035C4D5 /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
@@ -52,6 +54,8 @@
 		CBC17B30278B2A5000339DE1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CBC17B36278B319C00339DE1 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		CBC17B38278B42FF00339DE1 /* CatalogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogView.swift; sourceTree = "<group>"; };
+		CBCB2FB9279C1BFD00395EFB /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
+		CBCB2FBC279C3FA600395EFB /* ColorSegmentedControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSegmentedControlView.swift; sourceTree = "<group>"; };
 		CBD8CAEC2793273F00D04571 /* GoogleApiClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleApiClient.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -107,6 +111,7 @@
 				CBC17B3B278B432400339DE1 /* View */,
 				CBC17B3A278B430A00339DE1 /* ViewControllers */,
 				CBC17B3D278B433700339DE1 /* SupportingFiles */,
+				CBCB2FBB279C1C0B00395EFB /* Extensions */,
 				CBC17B2D278B2A5000339DE1 /* LaunchScreen.storyboard */,
 				CBC17B2B278B2A5000339DE1 /* Assets.xcassets */,
 				CBC17B30278B2A5000339DE1 /* Info.plist */,
@@ -129,8 +134,9 @@
 			children = (
 				CB6A8AAF279720820035C4D5 /* MenuView.swift */,
 				CBC17B38278B42FF00339DE1 /* CatalogView.swift */,
-				CB152038279B1C9D009BD006 /* CatalogItemView.swift */,
+				CB152038279B1C9D009BD006 /* ItemGroupView.swift */,
 				CB15203A279B4D2C009BD006 /* ItemView.swift */,
+				CBCB2FBC279C3FA600395EFB /* ColorSegmentedControlView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -151,6 +157,14 @@
 				CBC17B24278B2A4B00339DE1 /* SceneDelegate.swift */,
 			);
 			path = SupportingFiles;
+			sourceTree = "<group>";
+		};
+		CBCB2FBB279C1C0B00395EFB /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				CBCB2FB9279C1BFD00395EFB /* StringExtension.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -271,11 +285,13 @@
 				CB15203D279B69C1009BD006 /* ItemViewController.swift in Sources */,
 				CBC17B27278B2A4B00339DE1 /* CatalogViewController.swift in Sources */,
 				CBC17B39278B42FF00339DE1 /* CatalogView.swift in Sources */,
+				CBCB2FBA279C1BFD00395EFB /* StringExtension.swift in Sources */,
 				CB6A8AB0279720820035C4D5 /* MenuView.swift in Sources */,
 				CB15203B279B4D2C009BD006 /* ItemView.swift in Sources */,
+				CBCB2FBD279C3FA600395EFB /* ColorSegmentedControlView.swift in Sources */,
 				CBC17B37278B319C00339DE1 /* Item.swift in Sources */,
 				CBC17B23278B2A4B00339DE1 /* AppDelegate.swift in Sources */,
-				CB152039279B1C9D009BD006 /* CatalogItemView.swift in Sources */,
+				CB152039279B1C9D009BD006 /* ItemGroupView.swift in Sources */,
 				CBC17B25278B2A4B00339DE1 /* SceneDelegate.swift in Sources */,
 				CBD8CAED2793273F00D04571 /* GoogleApiClient.swift in Sources */,
 				CB6A8AB4279724B60035C4D5 /* MenuViewController.swift in Sources */,
