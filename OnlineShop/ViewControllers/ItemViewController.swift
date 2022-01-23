@@ -9,17 +9,21 @@ import UIKit
 
 class ItemViewController: UIViewController {
 
-    let currentItemGroup: ItemGroup
     let currentItem: Item
     
+    lazy var activityButton: UIBarButtonItem = {
+        let barButton = UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.up"), style: .done, target: self, action: #selector(didTapActivityButton(sender:)))
+        barButton.tintColor = .black
+        return barButton
+    }()
+    
     lazy var itemView: UIView = {
-        let view = ItemView(currentItemGroup: currentItemGroup, currentItem: currentItem)
+        let view = ItemView(currentItem: currentItem)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
-    init(currentItemGroup: ItemGroup, currentItem: Item) {
-        self.currentItemGroup = currentItemGroup
+    init(currentItem: Item) {
         self.currentItem = currentItem
         super.init(nibName: nil, bundle: nil)
     }
@@ -29,8 +33,14 @@ class ItemViewController: UIViewController {
     }
     
     override func viewDidLoad() {
+        navigationController?.navigationBar.topItem?.title = ""
         super.viewDidLoad()
+        navigationItem.rightBarButtonItem = activityButton
         setupView()
+    }
+    
+    @objc func didTapActivityButton(sender: UIButton) {
+        
     }
     
     func setupView() {

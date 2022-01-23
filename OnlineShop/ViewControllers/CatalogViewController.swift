@@ -32,6 +32,8 @@ class CatalogViewController: UIViewController {
     }
     
     func setupView() {
+        navigationController?.navigationBar.topItem?.title = ""
+        navigationController?.navigationBar.tintColor = .black
         view.addSubview(catalogView)
         setupConstraints()
     }

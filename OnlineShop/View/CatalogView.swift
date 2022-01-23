@@ -41,7 +41,7 @@ class CatalogView: UIView {
             if let firstItem = currentItemGroup.items.first,
                firstItem is Item,
                let firstItem = firstItem as? Item {
-                viewControllerToOpen = ItemViewController(currentItemGroup: currentItemGroup, currentItem: firstItem)
+                viewControllerToOpen = ItemViewController(currentItem: firstItem)
             } else {
                 viewControllerToOpen = CatalogViewController(items: currentItemGroup.items)
             }

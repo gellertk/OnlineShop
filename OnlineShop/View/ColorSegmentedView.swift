@@ -7,14 +7,15 @@
 
 import UIKit
 
-class ColorSegmentedControlView: UIControl {
+class ColorSegmentedView: UIControl {
     
     var colors: [String] = []
+    var selectedSegmentIndex = 0
     
     lazy var colorButtons: [UIButton] = {
         var buttons = [UIButton]()
         for index in colors.indices {
-            let button = UIButton(type: .custom)
+            let button = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 25))
             button.tag = index
             button.backgroundColor = stringColorDic[colors[index]]
             button.layer.cornerRadius = button.frame.width / 2
@@ -45,10 +46,15 @@ class ColorSegmentedControlView: UIControl {
     }
     
     @objc func buttonTapped(button: UIButton) {
-        button.layer.cornerRadius = 5
-        button.layer.borderWidth = 1
-        button.layer.borderColor = UIColor.black.cgColor
-        //sendAction(<#T##action: Selector##Selector#>, to: <#T##Any?#>, for: <#T##UIEvent?#>)
+        guard button.tag != selectedSegmentIndex else { return }
+        
+        colorButtons[selectedSegmentIndex].layer.borderWidth = 0
+        colorButtons[selectedSegmentIndex].layer.borderColor = nil
+      
+        button.layer.borderWidth = 3
+        button.layer.borderColor = UIColor(red: 1, green: 0, blue: 0, alpha: 1).cgColor
+        selectedSegmentIndex = button.tag
+        sendActions(for: .valueChanged)
     }
     
     func setupView() {

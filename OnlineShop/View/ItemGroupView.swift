@@ -29,6 +29,7 @@ class ItemGroupView: UIView {
         self.item = item
         super.init(frame: CGRect.zero)
         self.tag = tag
+        layer.cornerRadius = 15 
         setupView()
     }
 
