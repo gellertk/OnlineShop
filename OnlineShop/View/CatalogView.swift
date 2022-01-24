@@ -7,13 +7,16 @@
 
 import UIKit
 
+protocol CatalogViewDelegate {
+    func catalogViewDidTapItemGroupView(chosenGroupIndex: Int)
+}
+
 class CatalogView: UIView {
     
-    let catalogViewController: CatalogViewController
+    var delegate: CatalogViewDelegate?
     var items: [ItemGroup]
     
-    init(catalogViewController: CatalogViewController, items: [ItemGroup]) {
-        self.catalogViewController = catalogViewController
+    init(items: [ItemGroup]) {
         self.items = items
         super.init(frame: CGRect.zero)
         setupView()
@@ -35,19 +38,8 @@ class CatalogView: UIView {
     }
     
     @objc func didTapCatalogItem(sender: UITapGestureRecognizer) {
-        if let tappedView = sender.view {
-            let currentItemGroup = items[tappedView.tag]
-            var viewControllerToOpen = UIViewController()
-            if let firstItem = currentItemGroup.items.first,
-               firstItem is Item,
-               let firstItem = firstItem as? Item {
-                viewControllerToOpen = ItemViewController(currentItem: firstItem)
-            } else {
-                viewControllerToOpen = CatalogViewController(items: currentItemGroup.items)
-            }
-            if let navigationViewController = window?.rootViewController as? UINavigationController {
-                navigationViewController.pushViewController(viewControllerToOpen, animated: true)
-            }
+        if let index = sender.view?.tag {
+            delegate?.catalogViewDidTapItemGroupView(chosenGroupIndex: index)
         }
     }
     

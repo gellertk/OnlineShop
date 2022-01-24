@@ -8,11 +8,12 @@
 import UIKit
 
 class CatalogViewController: UIViewController {
-    
+   
     let items: [ItemGroup]
     
     lazy var catalogView: UIView = {
-        let view = CatalogView(catalogViewController: self, items: items)
+        let view = CatalogView(items: items)
+        view.delegate = self
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -49,3 +50,20 @@ class CatalogViewController: UIViewController {
 
 }
 
+extension CatalogViewController: CatalogViewDelegate {
+    func catalogViewDidTapItemGroupView(chosenGroupIndex: Int) {
+        guard let navigationController = navigationController else {
+            return
+        }
+        let currentItemGroup = items[chosenGroupIndex]
+        var viewControllerToOpen = UIViewController()
+        if let firstItem = currentItemGroup.items.first,
+           firstItem is Item,
+           let firstItem = firstItem as? Item {
+            viewControllerToOpen = ItemViewController(currentItem: firstItem)
+        } else {
+            viewControllerToOpen = CatalogViewController(items: currentItemGroup.items)
+        }
+        navigationController.pushViewController(viewControllerToOpen, animated: true)
+    }
+}

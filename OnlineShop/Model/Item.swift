@@ -9,33 +9,33 @@ import Foundation
 
 class ItemGroup {
     
-    var name: String
-    var colors: [String]?
-    var imgName: String
-    var memorys: [String]?
+    let name: String
+    let colors: [String]?
+    let imgName: String
+    let memorys: [String]?
     var rams: [String]?
-    var description: String?
+    //let description: String?
     var items: [ItemGroup]
     
     init(name: String, imgName: String, items: [ItemGroup], possibleMemory: [String], possibleColors: [String]) {
         self.name = name
+        self.colors = possibleColors
         self.imgName = imgName
         self.items = items
         self.memorys = possibleMemory
-        self.colors = possibleColors
     }
     
 }
 
 class Item: ItemGroup {
     
-    var companyName: String
-    var price: Int
-    var memory: String
-    var ram: String
-    var color: String
-    var count: Int
-    var itemGroup: ItemGroup
+    let companyName: String
+    let price: Int
+    let memory: String
+    let ram: String
+    let color: String
+    let count: Int
+    let itemGroup: ItemGroup
 
     init(companyName: String, name: String, itemGroup: ItemGroup, color: String, price: Int, memory: String, ram: String, count: Int) {
         self.companyName = companyName
