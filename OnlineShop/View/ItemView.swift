@@ -20,9 +20,14 @@ let stringColorDic: [String: UIColor] = [
     "gold": .systemYellow
 ]
 
+protocol ItemViewDelegate: AnyObject {
+    func itemViewColorSegmentsValueChange(selectedSegmentColorIndex: Int, selectedSegmentMemoryIndex: Int)
+}
+
 class ItemView: UIView {
     
     var item: Item
+    weak var delegate: ItemViewDelegate?
     
     lazy var itemImageView: UIImageView = {
         let imageView = UIImageView()
@@ -97,29 +102,41 @@ class ItemView: UIView {
     }
     
     @objc func colorSegmentValueChange(sender: ColorSegmentedView) {
-        var isInStock = false
-        if let chosenColor = item.itemGroup.colors?[sender.selectedSegmentIndex],
-           let chosenItem = getFromStock(itemGroup: item.itemGroup, color: chosenColor, memory: item.memory) {
-            item = chosenItem
-            isInStock = true
+        guard let delegate = delegate else {
+            return
         }
-        setupToCartButton(isInStock: isInStock)
-        setupItem()
+        delegate.itemViewColorSegmentsValueChange(selectedSegmentColorIndex: sender.selectedSegmentIndex,
+                                                  selectedSegmentMemoryIndex: memorySegmentedControl.selectedSegmentIndex)
     }
     
     @objc func memorySegmentValueChange(sender: UISegmentedControl) {
-        var isInStock = false
-        if let chosenMemory = item.itemGroup.memorys?[memorySegmentedControl.selectedSegmentIndex],
-           let chosenItem = getFromStock(itemGroup: item.itemGroup, color: item.color, memory: chosenMemory) {
-            item = chosenItem
-            isInStock = true
+        guard let delegate = delegate else {
+            return
         }
-        setupToCartButton(isInStock: isInStock)
-        setupItem()
+        delegate.itemViewColorSegmentsValueChange(selectedSegmentColorIndex: colorSegmentedControl.selectedSegmentIndex,
+                                                  selectedSegmentMemoryIndex: sender.selectedSegmentIndex)
     }
     
     @objc func didTapToCartButton(sender: UIButton) {
         
+    }
+    
+    func setupView() {
+        setupItem(isInStock: true)
+        backgroundColor = UIColor(white: 0.97, alpha: 1)
+        [itemImageView, whiteView, nameLabel, priceLabel, colorLabel, colorSegmentedControl, memoryLabel, memorySegmentedControl, toCartButton].forEach { view in
+            view.translatesAutoresizingMaskIntoConstraints = false
+            addSubview(view)
+        }
+        sendSubviewToBack(whiteView)
+        setupConstraints()
+    }
+    
+    func setupItem(isInStock: Bool) {
+        priceLabel.text = "\(item.price) Р"
+        nameLabel.text = "\(item.companyName) \(item.name), \(item.memory), \"\(item.color)\""
+        itemImageView.image = UIImage(named: item.imgName) ?? UIImage(named: "EmptyPhoto")
+        setupToCartButton(isInStock: isInStock)
     }
     
     func setupToCartButton(isInStock: Bool) {
@@ -132,27 +149,8 @@ class ItemView: UIView {
         }
     }
     
-    func setupView() {
-        setupItem()
-        setupToCartButton(isInStock: true)
-        backgroundColor = UIColor(white: 0.97, alpha: 1)
-        [itemImageView, whiteView, nameLabel, priceLabel, colorLabel, colorSegmentedControl, memoryLabel, memorySegmentedControl, toCartButton].forEach { view in
-            view.translatesAutoresizingMaskIntoConstraints = false
-            addSubview(view)
-        }
-        sendSubviewToBack(whiteView)
-        setupConstraints()
-    }
-    
-    func setupItem() {
-        priceLabel.text = "\(item.price) Р"
-        nameLabel.text = "\(item.companyName) \(item.name), \(item.memory), \"\(item.color)\""
-        itemImageView.image = UIImage(named: item.imgName) ?? UIImage(named: "EmptyPhoto")
-    }
-    
     func setupConstraints() {
         NSLayoutConstraint.activate([
-            
             itemImageView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
             itemImageView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width),
             itemImageView.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height * 0.50),

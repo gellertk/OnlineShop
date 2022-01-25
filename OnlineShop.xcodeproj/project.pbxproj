@@ -135,8 +135,8 @@
 				CB6A8AAF279720820035C4D5 /* MenuView.swift */,
 				CBC17B38278B42FF00339DE1 /* CatalogView.swift */,
 				CB152038279B1C9D009BD006 /* ItemGroupView.swift */,
-				CB15203A279B4D2C009BD006 /* ItemView.swift */,
 				CBCB2FBC279C3FA600395EFB /* ColorSegmentedView.swift */,
+				CB15203A279B4D2C009BD006 /* ItemView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";

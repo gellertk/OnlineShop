@@ -51,19 +51,21 @@ class CatalogViewController: UIViewController {
 }
 
 extension CatalogViewController: CatalogViewDelegate {
+    
     func catalogViewDidTapItemGroupView(chosenGroupIndex: Int) {
         guard let navigationController = navigationController else {
             return
         }
         let currentItemGroup = items[chosenGroupIndex]
         var viewControllerToOpen = UIViewController()
-        if let firstItem = currentItemGroup.items.first,
-           firstItem is Item,
-           let firstItem = firstItem as? Item {
-            viewControllerToOpen = ItemViewController(currentItem: firstItem)
+        if let item = currentItemGroup.items.first,
+           item is Item,
+           let item = item as? Item {
+            viewControllerToOpen = ItemViewController(item: item)
         } else {
             viewControllerToOpen = CatalogViewController(items: currentItemGroup.items)
         }
         navigationController.pushViewController(viewControllerToOpen, animated: true)
     }
+    
 }

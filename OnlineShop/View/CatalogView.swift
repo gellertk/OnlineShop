@@ -7,13 +7,13 @@
 
 import UIKit
 
-protocol CatalogViewDelegate {
+protocol CatalogViewDelegate: AnyObject {
     func catalogViewDidTapItemGroupView(chosenGroupIndex: Int)
 }
 
 class CatalogView: UIView {
     
-    var delegate: CatalogViewDelegate?
+    weak var delegate: CatalogViewDelegate?
     var items: [ItemGroup]
     
     init(items: [ItemGroup]) {
@@ -38,8 +38,8 @@ class CatalogView: UIView {
     }
     
     @objc func didTapCatalogItem(sender: UITapGestureRecognizer) {
-        if let index = sender.view?.tag {
-            delegate?.catalogViewDidTapItemGroupView(chosenGroupIndex: index)
+        if let index = sender.view?.tag, let delegate = delegate {
+            delegate.catalogViewDidTapItemGroupView(chosenGroupIndex: index)
         }
     }
     

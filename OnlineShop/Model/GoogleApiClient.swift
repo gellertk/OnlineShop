@@ -47,14 +47,13 @@ class GoogleApiClient: NSObject {
                 if let memorys = itemGroup.memorys,
                    let colors = itemGroup.colors,
                        rowValues[6] == "TRUE" {
-//                    for memory in memorys {
-//                        for color in colors {
-//                            
-//                        }
-//                    }
+                    for memory in memorys {
+                        for color in colors {
+                            
+                        }
+                    }
                     for row in itemValues {
                         if row.contains(currentGroup.name) {
-                            
                             currentGroup.items.append(Item(companyName: row[0], name: row[1], itemGroup: currentGroup, color: row[2], price: Int(row[3]) ?? 0, memory: row[4].getFormattedSize(), ram: row[5], count: Int(row[6]) ?? 0))
                         }
                     }

@@ -9,7 +9,8 @@ import UIKit
 
 class ItemViewController: UIViewController {
 
-    let currentItem: Item
+    let item: Item
+    weak var delegate: ItemViewDelegate?
     
     lazy var activityButton: UIBarButtonItem = {
         let barButton = UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.up"), style: .done, target: self, action: #selector(didTapActivityButton(sender:)))
@@ -17,14 +18,15 @@ class ItemViewController: UIViewController {
         return barButton
     }()
     
-    lazy var itemView: UIView = {
-        let view = ItemView(currentItem: currentItem)
+    lazy var itemView: ItemView = {
+        let view = ItemView(currentItem: item)
+        view.delegate = self
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
-    init(currentItem: Item) {
-        self.currentItem = currentItem
+    init(item: Item) {
+        self.item = item
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -33,10 +35,13 @@ class ItemViewController: UIViewController {
     }
     
     override func viewDidLoad() {
-        navigationController?.navigationBar.topItem?.title = ""
         super.viewDidLoad()
-        navigationItem.rightBarButtonItem = activityButton
         setupView()
+        guard let navigationController = navigationController else {
+            return
+        }
+        navigationController.navigationBar.topItem?.title = ""
+        navigationItem.rightBarButtonItem = activityButton
     }
     
     @objc func didTapActivityButton(sender: UIButton) {
@@ -56,4 +61,18 @@ class ItemViewController: UIViewController {
             itemView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         ])
     }
+}
+
+extension ItemViewController: ItemViewDelegate {
+    
+    func itemViewColorSegmentsValueChange(selectedSegmentColorIndex: Int, selectedSegmentMemoryIndex: Int) {
+        guard let color = item.itemGroup.colors?[selectedSegmentColorIndex],
+              let memory = item.itemGroup.memorys?[selectedSegmentMemoryIndex],
+              let chosenItem = getFromStock(itemGroup: item.itemGroup, color: color, memory: memory) else {
+            return
+        }
+        itemView.item = chosenItem
+        itemView.setupItem(isInStock: chosenItem.count > 0)
+    }
+    
 }

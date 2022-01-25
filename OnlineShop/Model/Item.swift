@@ -53,7 +53,7 @@ class Item: ItemGroup {
 func getFromStock(itemGroup: ItemGroup, color: String, memory: String) -> Item? {
     if let chosenColor = itemGroup.colors?.first(where: { $0 == color }),
        let items = itemGroup.items as? [Item],
-       let chosenItem = items.first(where: { $0.color == chosenColor && $0.memory == memory && $0.count > 0 }) {
+       let chosenItem = items.first(where: { $0.color == chosenColor && $0.memory == memory }) {
         return chosenItem
     }
     return nil
