@@ -17,19 +17,19 @@ class ItemGroup {
     //let description: String?
     var items: [ItemGroup]
     
-    init(name: String, imgName: String, items: [ItemGroup], possibleMemory: [String], possibleColors: [String]) {
+    init(name: String, imgName: String, items: [ItemGroup], possibleMemory: String, possibleColors: String) {
         self.name = name
-        self.colors = possibleColors
+        self.colors = possibleColors.convertToFormattedColorCollection()
         self.imgName = imgName
         self.items = items
-        self.memorys = possibleMemory
+        self.memorys = possibleMemory.convertToFormattedMemoryCollection()
     }
     
 }
 
 class Item: ItemGroup {
     
-    let companyName: String
+    let brand: String
     let price: Int
     let memory: String
     let ram: String
@@ -37,25 +37,37 @@ class Item: ItemGroup {
     let count: Int
     let itemGroup: ItemGroup
 
-    init(companyName: String, name: String, itemGroup: ItemGroup, color: String, price: Int, memory: String, ram: String, count: Int) {
-        self.companyName = companyName
+    init(brand: String,
+             name: String,
+             itemGroup: ItemGroup,
+             color: String,
+             price: String,
+             memory: String,
+             ram: String,
+             count: String) {
+        
+        self.brand = brand
         self.itemGroup = itemGroup
         self.color = color
-        self.price = price
-        self.memory = memory
+        self.price = Int(price) ?? 0
+        self.memory = memory.getFormattedSize()
         self.ram = ram
-        self.count = count
-        super.init(name: name, imgName: "\(name) \(color)", items: [ItemGroup](), possibleMemory: [String](), possibleColors: [String]())
+        self.count = Int(count) ?? 0
+        super.init(name: name, imgName: "\(name) \(color)", items: [ItemGroup](), possibleMemory: "", possibleColors: "")
+    }
+    
+    func getFromStock(by color: String, and memory: String, and ram: String) -> Item? {
+        if let items = itemGroup.items as? [Item] {
+            return items.first(where: {
+                $0.color == color &&
+                $0.memory == memory &&
+                $0.ram == ram
+            })
+        }
+        return nil
     }
 
 }
 
-func getFromStock(itemGroup: ItemGroup, color: String, memory: String) -> Item? {
-    if let chosenColor = itemGroup.colors?.first(where: { $0 == color }),
-       let items = itemGroup.items as? [Item],
-       let chosenItem = items.first(where: { $0.color == chosenColor && $0.memory == memory }) {
-        return chosenItem
-    }
-    return nil
-}
+
 

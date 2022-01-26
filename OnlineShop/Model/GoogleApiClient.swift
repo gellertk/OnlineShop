@@ -6,7 +6,6 @@
 //
 
 import GoogleAPIClientForREST
-//import Foundation
 
 var itemTree: [ItemGroup] = []
 
@@ -28,33 +27,44 @@ class GoogleApiClient: NSObject {
             print(error.localizedDescription)
             return
         }
-        guard let groupValues = finishedWithObject.valueRanges?.first?.values as? [[String]],
-              let itemValues = finishedWithObject.valueRanges?.last?.values as? [[String]] else { return }
-        fillItems(groupValues: groupValues, itemValues: itemValues)
+        guard let groupsListValues = finishedWithObject.valueRanges?.first?.values as? [[String]],
+              let itemsListValues = finishedWithObject.valueRanges?.last?.values as? [[String]] else {
+                  return
+              }
+        fillItems(groupsListValues: groupsListValues, itemsListValues: itemsListValues)
     }
     
-    func fillItems(groupValues: [[String]], itemValues: [[String]]) {
-        for rowIndex in groupValues.indices {
-            if rowIndex == 0 {
+    func fillItems(groupsListValues: [[String]], itemsListValues: [[String]]) {
+        let groupKeys: [String] = groupsListValues.first ?? []
+        let itemKeys: [String] = itemsListValues.first ?? []
+        for rowGroups in groupsListValues {
+            if rowGroups == groupsListValues.first {
                 continue
             }
-            let rowValues = groupValues[rowIndex]
-            let currentGroup = ItemGroup(name: rowValues[1], imgName: rowValues[2], items: [ItemGroup](), possibleMemory: rowValues[4].convertInPossibleMemoryCollection(), possibleColors: rowValues[3].convertInPossibleColorCollection())
+            let groupCurrentValues = rowGroups.convertToDictionary(keys: groupKeys)
+            let currentGroup = ItemGroup(name: groupCurrentValues["Group name"] ?? "",
+                                         imgName: groupCurrentValues["Image name"] ?? "",
+                                         items: [ItemGroup](),
+                                         possibleMemory: groupCurrentValues["Memory"] ?? "",
+                                         possibleColors: groupCurrentValues["Colors"] ?? "")
             itemList.append(currentGroup)
-            let parent = rowValues[0]
-            if let itemGroup = itemList.first(where: {$0.name == parent}) {
+            if let itemGroup = itemList.first(where: {$0.name == groupCurrentValues["Parent"]}) {
                 itemGroup.items.append(currentGroup)
-                if let memorys = itemGroup.memorys,
-                   let colors = itemGroup.colors,
-                       rowValues[6] == "TRUE" {
-                    for memory in memorys {
-                        for color in colors {
-                            
+                if groupCurrentValues["Is item"] == "TRUE" {
+                    for rowItems in itemsListValues {
+                        if rowItems == itemsListValues.first {
+                            continue
                         }
-                    }
-                    for row in itemValues {
-                        if row.contains(currentGroup.name) {
-                            currentGroup.items.append(Item(companyName: row[0], name: row[1], itemGroup: currentGroup, color: row[2], price: Int(row[3]) ?? 0, memory: row[4].getFormattedSize(), ram: row[5], count: Int(row[6]) ?? 0))
+                        if rowItems.contains(currentGroup.name) {
+                            let itemCurrentValues = rowItems.convertToDictionary(keys: itemKeys)
+                            currentGroup.items.append(Item(brand: itemCurrentValues["Company"] ?? "",
+                                                           name: itemCurrentValues["Name"] ?? "",
+                                                           itemGroup: currentGroup,
+                                                           color: itemCurrentValues["Color"] ?? "",
+                                                           price: itemCurrentValues["Price"] ?? "",
+                                                           memory: itemCurrentValues["Memory"] ?? "",
+                                                           ram: itemCurrentValues["Ram"] ?? "",
+                                                           count: itemCurrentValues["Count"] ?? ""))
                         }
                     }
                 }
@@ -63,4 +73,5 @@ class GoogleApiClient: NSObject {
             }
         }
     }
+    
 }

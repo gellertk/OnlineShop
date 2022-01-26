@@ -21,7 +21,9 @@ let stringColorDic: [String: UIColor] = [
 ]
 
 protocol ItemViewDelegate: AnyObject {
-    func itemViewColorSegmentsValueChange(selectedSegmentColorIndex: Int, selectedSegmentMemoryIndex: Int)
+    func itemViewColorSegmentsValueChange(selectedSegmentColorIndex: Int?,
+                                          selectedSegmentMemoryIndex: Int?,
+                                          selectedSegmentRamIndex: Int?)
 }
 
 class ItemView: UIView {
@@ -106,7 +108,8 @@ class ItemView: UIView {
             return
         }
         delegate.itemViewColorSegmentsValueChange(selectedSegmentColorIndex: sender.selectedSegmentIndex,
-                                                  selectedSegmentMemoryIndex: memorySegmentedControl.selectedSegmentIndex)
+                                                  selectedSegmentMemoryIndex: memorySegmentedControl.selectedSegmentIndex,
+                                                  selectedSegmentRamIndex: nil)
     }
     
     @objc func memorySegmentValueChange(sender: UISegmentedControl) {
@@ -114,7 +117,8 @@ class ItemView: UIView {
             return
         }
         delegate.itemViewColorSegmentsValueChange(selectedSegmentColorIndex: colorSegmentedControl.selectedSegmentIndex,
-                                                  selectedSegmentMemoryIndex: sender.selectedSegmentIndex)
+                                                  selectedSegmentMemoryIndex: sender.selectedSegmentIndex,
+                                                  selectedSegmentRamIndex: nil)
     }
     
     @objc func didTapToCartButton(sender: UIButton) {
@@ -132,9 +136,14 @@ class ItemView: UIView {
         setupConstraints()
     }
     
-    func setupItem(isInStock: Bool) {
+    func setupItem(isInStock: Bool, isNoItemData: Bool = false) {
+        if isNoItemData {
+            colorSegmentedControl.selectedSegmentIndex = item.itemGroup.colors?.firstIndex(of: item.color) ?? 0
+            memorySegmentedControl.selectedSegmentIndex = item.itemGroup.memorys?.firstIndex(of: item.memory) ?? 0
+            ramSegmentedControl.selectedSegmentIndex = item.itemGroup.rams?.firstIndex(of: item.ram) ?? 0
+        }
         priceLabel.text = "\(item.price) Р"
-        nameLabel.text = "\(item.companyName) \(item.name), \(item.memory), \"\(item.color)\""
+        nameLabel.text = "\(item.brand) \(item.name), \(item.memory), \"\(item.color)\""
         itemImageView.image = UIImage(named: item.imgName) ?? UIImage(named: "EmptyPhoto")
         setupToCartButton(isInStock: isInStock)
     }

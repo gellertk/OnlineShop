@@ -12,6 +12,12 @@ class ItemViewController: UIViewController {
     let item: Item
     weak var delegate: ItemViewDelegate?
     
+    lazy var outOfStockAlertController: UIAlertController = {
+        let alertController = UIAlertController(title: "Sorry", message: "Item is out of stock", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+        return alertController
+    }()
+    
     lazy var activityButton: UIBarButtonItem = {
         let barButton = UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.up"), style: .done, target: self, action: #selector(didTapActivityButton(sender:)))
         barButton.tintColor = .black
@@ -65,14 +71,21 @@ class ItemViewController: UIViewController {
 
 extension ItemViewController: ItemViewDelegate {
     
-    func itemViewColorSegmentsValueChange(selectedSegmentColorIndex: Int, selectedSegmentMemoryIndex: Int) {
-        guard let color = item.itemGroup.colors?[selectedSegmentColorIndex],
-              let memory = item.itemGroup.memorys?[selectedSegmentMemoryIndex],
-              let chosenItem = getFromStock(itemGroup: item.itemGroup, color: color, memory: memory) else {
-            return
+    func itemViewColorSegmentsValueChange(selectedSegmentColorIndex: Int?,
+                                          selectedSegmentMemoryIndex: Int?,
+                                          selectedSegmentRamIndex: Int?) {
+
+        let color = selectedSegmentColorIndex != nil ? item.itemGroup.colors?[selectedSegmentColorIndex!] ?? "" : ""
+        let memory = selectedSegmentMemoryIndex != nil ? item.itemGroup.memorys?[selectedSegmentMemoryIndex!] ?? "" : ""
+        let ram = selectedSegmentRamIndex != nil ? item.itemGroup.colors?[selectedSegmentRamIndex!] ?? "" : ""
+              
+        if let chosenItem = item.getFromStock(by: color, and: memory, and: ram) {
+            itemView.item = chosenItem
+            itemView.setupItem(isInStock: chosenItem.count > 0)
+        } else {
+            itemView.setupItem(isInStock: false, isNoItemData: true)
+            present(outOfStockAlertController, animated: true)
         }
-        itemView.item = chosenItem
-        itemView.setupItem(isInStock: chosenItem.count > 0)
     }
     
 }

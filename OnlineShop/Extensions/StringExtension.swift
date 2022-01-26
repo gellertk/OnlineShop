@@ -9,7 +9,7 @@ import Foundation
 
 extension String {
     
-    func convertInPossibleMemoryCollection() -> [String] {
+    func convertToFormattedMemoryCollection() -> [String] {
         let formattedString = self.replacingOccurrences(of: " ", with: "")
         var formattedArray = formattedString.components(separatedBy: ",")
         for index in formattedArray.indices {
@@ -18,7 +18,7 @@ extension String {
         return formattedArray
     }
     
-    func convertInPossibleColorCollection() -> [String] {
+    func convertToFormattedColorCollection() -> [String] {
         let formattedString = self.replacingOccurrences(of: " ", with: "")
         let formattedArray = formattedString.components(separatedBy: ",")
         return formattedArray

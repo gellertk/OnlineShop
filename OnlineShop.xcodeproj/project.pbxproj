@@ -12,6 +12,7 @@
 		CB15203D279B69C1009BD006 /* ItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB15203C279B69C1009BD006 /* ItemViewController.swift */; };
 		CB6A8AB0279720820035C4D5 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6A8AAF279720820035C4D5 /* MenuView.swift */; };
 		CB6A8AB4279724B60035C4D5 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6A8AB3279724B60035C4D5 /* MenuViewController.swift */; };
+		CB7DB16927A1C02400454600 /* ArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7DB16827A1C02400454600 /* ArrayExtension.swift */; };
 		CBC17B23278B2A4B00339DE1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC17B22278B2A4B00339DE1 /* AppDelegate.swift */; };
 		CBC17B25278B2A4B00339DE1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC17B24278B2A4B00339DE1 /* SceneDelegate.swift */; };
 		CBC17B27278B2A4B00339DE1 /* CatalogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBC17B26278B2A4B00339DE1 /* CatalogViewController.swift */; };
@@ -45,6 +46,7 @@
 		CB15203C279B69C1009BD006 /* ItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemViewController.swift; sourceTree = "<group>"; };
 		CB6A8AAF279720820035C4D5 /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
 		CB6A8AB3279724B60035C4D5 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
+		CB7DB16827A1C02400454600 /* ArrayExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExtension.swift; sourceTree = "<group>"; };
 		CBC17B1F278B2A4B00339DE1 /* OnlineShop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OnlineShop.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBC17B22278B2A4B00339DE1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CBC17B24278B2A4B00339DE1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -163,6 +165,7 @@
 			isa = PBXGroup;
 			children = (
 				CBCB2FB9279C1BFD00395EFB /* StringExtension.swift */,
+				CB7DB16827A1C02400454600 /* ArrayExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -293,6 +296,7 @@
 				CBC17B23278B2A4B00339DE1 /* AppDelegate.swift in Sources */,
 				CB152039279B1C9D009BD006 /* ItemGroupView.swift in Sources */,
 				CBC17B25278B2A4B00339DE1 /* SceneDelegate.swift in Sources */,
+				CB7DB16927A1C02400454600 /* ArrayExtension.swift in Sources */,
 				CBD8CAED2793273F00D04571 /* GoogleApiClient.swift in Sources */,
 				CB6A8AB4279724B60035C4D5 /* MenuViewController.swift in Sources */,
 			);
