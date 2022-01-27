@@ -14,16 +14,16 @@ let stringColorDic: [String: UIColor] = [
     "blue": .blue,
     "red":  .red,
     "black": .black,
-    "white": UIColor(white: 0.95, alpha: 1),
+    "white": UIColor(white: 0.92, alpha: 1),
     "purple": .purple,
     "green": .green,
     "gold": .systemYellow
 ]
 
 protocol ItemViewDelegate: AnyObject {
-    func itemViewColorSegmentsValueChange(selectedSegmentColorIndex: Int?,
-                                          selectedSegmentMemoryIndex: Int?,
-                                          selectedSegmentRamIndex: Int?)
+    func itemViewSegmentsValueChange(selectedSegmentColorIndex: Int?,
+                                     selectedSegmentMemoryIndex: Int?,
+                                     selectedSegmentRamIndex: Int?)
 }
 
 class ItemView: UIView {
@@ -69,8 +69,8 @@ class ItemView: UIView {
         return label
     }()
     
-    lazy var colorSegmentedControl: ColorSegmentedView = {
-        let segmentedControl = ColorSegmentedView(colors: item.itemGroup.colors ?? [])
+    lazy var colorSegmentedControl: CustomColorSegmentedView = {
+        let segmentedControl = CustomColorSegmentedView(colors: item.itemGroup.colors ?? [])
         segmentedControl.addTarget(self, action: #selector(colorSegmentValueChange(sender:)), for: .valueChanged)
         return segmentedControl
     }()
@@ -103,22 +103,22 @@ class ItemView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    @objc func colorSegmentValueChange(sender: ColorSegmentedView) {
+    @objc func colorSegmentValueChange(sender: CustomColorSegmentedView) {
         guard let delegate = delegate else {
             return
         }
-        delegate.itemViewColorSegmentsValueChange(selectedSegmentColorIndex: sender.selectedSegmentIndex,
-                                                  selectedSegmentMemoryIndex: memorySegmentedControl.selectedSegmentIndex,
-                                                  selectedSegmentRamIndex: nil)
+        delegate.itemViewSegmentsValueChange(selectedSegmentColorIndex: sender.selectedSegmentIndex,
+                                             selectedSegmentMemoryIndex: memorySegmentedControl.selectedSegmentIndex,
+                                             selectedSegmentRamIndex: nil)
     }
     
     @objc func memorySegmentValueChange(sender: UISegmentedControl) {
         guard let delegate = delegate else {
             return
         }
-        delegate.itemViewColorSegmentsValueChange(selectedSegmentColorIndex: colorSegmentedControl.selectedSegmentIndex,
-                                                  selectedSegmentMemoryIndex: sender.selectedSegmentIndex,
-                                                  selectedSegmentRamIndex: nil)
+        delegate.itemViewSegmentsValueChange(selectedSegmentColorIndex: colorSegmentedControl.selectedSegmentIndex,
+                                             selectedSegmentMemoryIndex: sender.selectedSegmentIndex,
+                                             selectedSegmentRamIndex: nil)
     }
     
     @objc func didTapToCartButton(sender: UIButton) {
@@ -141,11 +141,12 @@ class ItemView: UIView {
             colorSegmentedControl.selectedSegmentIndex = item.itemGroup.colors?.firstIndex(of: item.color) ?? 0
             memorySegmentedControl.selectedSegmentIndex = item.itemGroup.memorys?.firstIndex(of: item.memory) ?? 0
             ramSegmentedControl.selectedSegmentIndex = item.itemGroup.rams?.firstIndex(of: item.ram) ?? 0
+        } else {
+            priceLabel.text = "\(item.price) Р"
+            nameLabel.text = "\(item.brand) \(item.name), \(item.memory), \"\(item.color)\""
+            itemImageView.image = UIImage(named: item.imgName) ?? UIImage(named: "EmptyPhoto")
+            setupToCartButton(isInStock: isInStock)
         }
-        priceLabel.text = "\(item.price) Р"
-        nameLabel.text = "\(item.brand) \(item.name), \(item.memory), \"\(item.color)\""
-        itemImageView.image = UIImage(named: item.imgName) ?? UIImage(named: "EmptyPhoto")
-        setupToCartButton(isInStock: isInStock)
     }
     
     func setupToCartButton(isInStock: Bool) {
@@ -181,6 +182,8 @@ class ItemView: UIView {
             
             colorSegmentedControl.centerYAnchor.constraint(equalTo: colorLabel.centerYAnchor),
             colorSegmentedControl.leadingAnchor.constraint(equalTo: colorLabel.trailingAnchor, constant: 20),
+            colorSegmentedControl.widthAnchor.constraint(equalToConstant: 230),
+            colorSegmentedControl.heightAnchor.constraint(equalToConstant: 30),
             
             memoryLabel.topAnchor.constraint(equalTo: colorLabel.bottomAnchor, constant: 30),
             memoryLabel.leadingAnchor.constraint(equalTo: colorLabel.leadingAnchor),

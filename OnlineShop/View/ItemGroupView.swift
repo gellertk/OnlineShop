@@ -29,7 +29,6 @@ class ItemGroupView: UIView {
         self.item = item
         super.init(frame: CGRect.zero)
         self.tag = tag
-        layer.cornerRadius = 15 
         setupView()
     }
 
@@ -38,6 +37,11 @@ class ItemGroupView: UIView {
     }
     
     func setupView() {
+        layer.shadowColor = UIColor.gray.cgColor
+        layer.shadowOffset = CGSize(width: 2, height: 2)
+        layer.shadowOpacity = 0.6
+        layer.shadowRadius = 5
+        layer.cornerRadius = 15
         translatesAutoresizingMaskIntoConstraints = false
         backgroundColor = .white
         [itemImageView, itemNameLabel].forEach { newView in

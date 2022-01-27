@@ -10,7 +10,7 @@ import UIKit
 class ItemViewController: UIViewController {
 
     let item: Item
-    weak var delegate: ItemViewDelegate?
+    //weak var itemViewDelegate: ItemViewDelegate?
     
     lazy var outOfStockAlertController: UIAlertController = {
         let alertController = UIAlertController(title: "Sorry", message: "Item is out of stock", preferredStyle: .alert)
@@ -71,9 +71,9 @@ class ItemViewController: UIViewController {
 
 extension ItemViewController: ItemViewDelegate {
     
-    func itemViewColorSegmentsValueChange(selectedSegmentColorIndex: Int?,
-                                          selectedSegmentMemoryIndex: Int?,
-                                          selectedSegmentRamIndex: Int?) {
+    func itemViewSegmentsValueChange(selectedSegmentColorIndex: Int?,
+                                     selectedSegmentMemoryIndex: Int?,
+                                     selectedSegmentRamIndex: Int?) {
 
         let color = selectedSegmentColorIndex != nil ? item.itemGroup.colors?[selectedSegmentColorIndex!] ?? "" : ""
         let memory = selectedSegmentMemoryIndex != nil ? item.itemGroup.memorys?[selectedSegmentMemoryIndex!] ?? "" : ""

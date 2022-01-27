@@ -7,20 +7,25 @@
 
 import UIKit
 
-class ColorSegmentedView: UIControl {
+class CustomColorSegmentedView: UIControl {
     
     var colors: [String] = []
-    var selectedSegmentIndex = 0
+    var selectedSegmentIndex = 0 {
+        willSet {
+            colorButtons[selectedSegmentIndex].layer.borderWidth = 0
+            colorButtons[selectedSegmentIndex].layer.borderColor = nil
+        }
+        didSet {
+            colorButtons[selectedSegmentIndex].layer.borderWidth = 3
+            colorButtons[selectedSegmentIndex].layer.borderColor = UIColor(red: 1, green: 0, blue: 0, alpha: 0.5).cgColor
+        }
+    }
     
     lazy var colorButtons: [UIButton] = {
-        var buttons = [UIButton]()
+        var buttons: [UIButton] = []
         for index in colors.indices {
-            let button = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 25))
-            button.tag = index
-            button.backgroundColor = stringColorDic[colors[index]]
-            button.layer.cornerRadius = button.frame.width / 2
-            button.clipsToBounds = true
-            button.addTarget(self, action: #selector(buttonTapped(button:)), for: .touchUpInside)
+            let button = CustomColorButton(color: stringColorDic[colors[index]] ?? UIColor(), index: index)
+            button.customColorSegmentedViewDelegate = self
             buttons.append(button)
         }
         return buttons
@@ -30,7 +35,7 @@ class ColorSegmentedView: UIControl {
         let stackView = UIStackView(arrangedSubviews: colorButtons)
         stackView.axis = .horizontal
         stackView.alignment = .fill
-        stackView.distribution = .fillProportionally
+        stackView.distribution = .fillEqually
         stackView.spacing = 10
         return stackView
     }()
@@ -45,17 +50,11 @@ class ColorSegmentedView: UIControl {
         fatalError("init(coder:) has not been implemented")
     }
     
-    @objc func buttonTapped(button: UIButton) {
-        guard button.tag != selectedSegmentIndex else { return }
-        
-        colorButtons[selectedSegmentIndex].layer.borderWidth = 0
-        colorButtons[selectedSegmentIndex].layer.borderColor = nil
-      
-        button.layer.borderWidth = 3
-        button.layer.borderColor = UIColor(red: 1, green: 0, blue: 0, alpha: 1).cgColor
-        selectedSegmentIndex = button.tag
-        sendActions(for: .valueChanged)
-    }
+    //    func colorButtonDidTap(button: UIButton) {
+    //        guard button.tag != selectedSegmentIndex else { return }
+    //        selectedSegmentIndex = button.tag
+    //        sendActions(for: .valueChanged)
+    //    }
     
     func setupView() {
         colorStackView.translatesAutoresizingMaskIntoConstraints = false
@@ -71,5 +70,14 @@ class ColorSegmentedView: UIControl {
             colorStackView.trailingAnchor.constraint(equalTo: trailingAnchor)
         ])
     }
-  
+    
+}
+
+extension CustomColorSegmentedView: CustomColorButtonDelegate {
+    
+    func colorButtonDidTap(selectedSegmentIndex: Int) {
+        self.selectedSegmentIndex = selectedSegmentIndex
+        sendActions(for: .valueChanged)
+    }
+    
 }
