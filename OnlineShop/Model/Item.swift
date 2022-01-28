@@ -38,13 +38,13 @@ class Item: ItemGroup {
     let itemGroup: ItemGroup
 
     init(brand: String,
-             name: String,
-             itemGroup: ItemGroup,
-             color: String,
-             price: String,
-             memory: String,
-             ram: String,
-             count: String) {
+         name: String,
+         itemGroup: ItemGroup,
+         color: String,
+         price: String,
+         memory: String,
+         ram: String,
+         count: String) {
         
         self.brand = brand
         self.itemGroup = itemGroup

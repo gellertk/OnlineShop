@@ -21,12 +21,12 @@ class CustomColorSegmentedView: UIControl {
         }
     }
     
-    lazy var colorButtons: [UIButton] = {
-        var buttons: [UIButton] = []
+    lazy var colorButtons: [ColorCircleView] = {
+        var buttons: [ColorCircleView] = []
         for index in colors.indices {
-            let button = CustomColorButton(color: stringColorDic[colors[index]] ?? UIColor(), index: index)
-            button.customColorSegmentedViewDelegate = self
-            buttons.append(button)
+            let view = ColorCircleView(color: stringColorDic[colors[index]] ?? UIColor(), index: index)
+            view.customColorSegmentedViewDelegate = self
+            buttons.append(view)
         }
         return buttons
     }()
@@ -36,7 +36,7 @@ class CustomColorSegmentedView: UIControl {
         stackView.axis = .horizontal
         stackView.alignment = .fill
         stackView.distribution = .fillEqually
-        stackView.spacing = 10
+        stackView.spacing = 5
         return stackView
     }()
     
@@ -50,12 +50,6 @@ class CustomColorSegmentedView: UIControl {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //    func colorButtonDidTap(button: UIButton) {
-    //        guard button.tag != selectedSegmentIndex else { return }
-    //        selectedSegmentIndex = button.tag
-    //        sendActions(for: .valueChanged)
-    //    }
-    
     func setupView() {
         colorStackView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(colorStackView)
@@ -67,7 +61,7 @@ class CustomColorSegmentedView: UIControl {
             colorStackView.topAnchor.constraint(equalTo: topAnchor),
             colorStackView.bottomAnchor.constraint(equalTo: bottomAnchor),
             colorStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            colorStackView.trailingAnchor.constraint(equalTo: trailingAnchor)
+            colorStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
         ])
     }
     

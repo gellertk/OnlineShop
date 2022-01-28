@@ -182,8 +182,8 @@ class ItemView: UIView {
             
             colorSegmentedControl.centerYAnchor.constraint(equalTo: colorLabel.centerYAnchor),
             colorSegmentedControl.leadingAnchor.constraint(equalTo: colorLabel.trailingAnchor, constant: 20),
-            colorSegmentedControl.widthAnchor.constraint(equalToConstant: 230),
-            colorSegmentedControl.heightAnchor.constraint(equalToConstant: 30),
+            colorSegmentedControl.widthAnchor.constraint(equalToConstant: 250),
+            colorSegmentedControl.heightAnchor.constraint(equalToConstant: 38),
             
             memoryLabel.topAnchor.constraint(equalTo: colorLabel.bottomAnchor, constant: 30),
             memoryLabel.leadingAnchor.constraint(equalTo: colorLabel.leadingAnchor),
