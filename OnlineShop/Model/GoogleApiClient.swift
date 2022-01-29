@@ -45,8 +45,9 @@ class GoogleApiClient: NSObject {
             let currentGroup = ItemGroup(name: groupCurrentValues["Group name"] ?? "",
                                          imgName: groupCurrentValues["Image name"] ?? "",
                                          items: [ItemGroup](),
-                                         possibleMemory: groupCurrentValues["Memory"] ?? "",
-                                         possibleColors: groupCurrentValues["Colors"] ?? "")
+                                         memorys: groupCurrentValues["Memorys"] ?? "",
+                                         colors: groupCurrentValues["Colors"] ?? "",
+                                         rams: groupCurrentValues["Rams"] ?? "")
             itemList.append(currentGroup)
             if let itemGroup = itemList.first(where: {$0.name == groupCurrentValues["Parent"]}) {
                 itemGroup.items.append(currentGroup)

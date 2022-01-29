@@ -30,6 +30,7 @@ class ItemView: UIView {
     
     var item: Item
     weak var delegate: ItemViewDelegate?
+    //lazy var viewDesign = ViewDesign(item: item)
     
     lazy var itemImageView: UIImageView = {
         let imageView = UIImageView()
@@ -37,7 +38,7 @@ class ItemView: UIView {
         return imageView
     }()
     
-    lazy var whiteView: UIView = {
+    lazy var whiteBackgroundView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
         return view
@@ -55,34 +56,50 @@ class ItemView: UIView {
         return label
     }()
     
-    lazy var colorLabel: UILabel = {
+    lazy var colorLabel: UILabel? = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14, weight: .medium)
         label.text = "Цвет:"
         return label
     }()
     
-    lazy var memoryLabel: UILabel = {
+    lazy var memoryLabel: UILabel? = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14, weight: .medium)
         label.text = "Память:"
         return label
     }()
     
-    lazy var colorSegmentedControl: CustomColorSegmentedView = {
-        let segmentedControl = CustomColorSegmentedView(colors: item.itemGroup.colors ?? [])
-        segmentedControl.addTarget(self, action: #selector(colorSegmentValueChange(sender:)), for: .valueChanged)
+    lazy var ramLabel: UILabel? = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 14, weight: .medium)
+        label.text = "Оперативная память:"
+        return label
+    }()
+    
+    lazy var colorSegmentedControl: CustomColorSegmentedView? = {
+        guard item.itemGroup.colors.count > 0 else {
+            return nil
+        }
+        let segmentedControl = CustomColorSegmentedView(colors: item.itemGroup.colors, selectedSegmentIndex: 0)
+        segmentedControl.itemViewDelegate = self
         return segmentedControl
     }()
     
-    lazy var memorySegmentedControl: UISegmentedControl = {
+    lazy var memorySegmentedControl: UISegmentedControl? = {
+        guard item.itemGroup.memorys.count > 0 else {
+            return nil
+        }
         let segmentedControl = UISegmentedControl(items: item.itemGroup.memorys)
         segmentedControl.addTarget(self, action: #selector(memorySegmentValueChange(sender:)), for: .valueChanged)
         segmentedControl.selectedSegmentIndex = 0
         return segmentedControl
     }()
     
-    lazy var ramSegmentedControl: UISegmentedControl = {
+    lazy var ramSegmentedControl: UISegmentedControl? = {
+        guard item.itemGroup.rams.count > 0 else {
+            return nil
+        }
         let segmentedControl = UISegmentedControl(items: item.itemGroup.rams)
         return segmentedControl
     }()
@@ -103,22 +120,22 @@ class ItemView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    @objc func colorSegmentValueChange(sender: CustomColorSegmentedView) {
-        guard let delegate = delegate else {
-            return
-        }
-        delegate.itemViewSegmentsValueChange(selectedSegmentColorIndex: sender.selectedSegmentIndex,
-                                             selectedSegmentMemoryIndex: memorySegmentedControl.selectedSegmentIndex,
-                                             selectedSegmentRamIndex: nil)
-    }
-    
     @objc func memorySegmentValueChange(sender: UISegmentedControl) {
         guard let delegate = delegate else {
             return
         }
-        delegate.itemViewSegmentsValueChange(selectedSegmentColorIndex: colorSegmentedControl.selectedSegmentIndex,
+        delegate.itemViewSegmentsValueChange(selectedSegmentColorIndex: colorSegmentedControl?.selectedSegmentIndex,
                                              selectedSegmentMemoryIndex: sender.selectedSegmentIndex,
-                                             selectedSegmentRamIndex: nil)
+                                             selectedSegmentRamIndex: ramSegmentedControl?.selectedSegmentIndex)
+    }
+    
+    @objc func ramSegmentValueChange(sender: UISegmentedControl) {
+        guard let delegate = delegate else {
+            return
+        }
+        delegate.itemViewSegmentsValueChange(selectedSegmentColorIndex: colorSegmentedControl?.selectedSegmentIndex,
+                                             selectedSegmentMemoryIndex: memorySegmentedControl?.selectedSegmentIndex,
+                                             selectedSegmentRamIndex: sender.selectedSegmentIndex)
     }
     
     @objc func didTapToCartButton(sender: UIButton) {
@@ -128,19 +145,47 @@ class ItemView: UIView {
     func setupView() {
         setupItem(isInStock: true)
         backgroundColor = UIColor(white: 0.97, alpha: 1)
-        [itemImageView, whiteView, nameLabel, priceLabel, colorLabel, colorSegmentedControl, memoryLabel, memorySegmentedControl, toCartButton].forEach { view in
+        let viewCollection = [
+            itemImageView,
+            whiteBackgroundView,
+            nameLabel,
+            priceLabel,
+            toCartButton
+        ]
+        viewCollection.forEach { view in
             view.translatesAutoresizingMaskIntoConstraints = false
             addSubview(view)
         }
-        sendSubviewToBack(whiteView)
+        let optionalViewCollection = [
+            colorLabel,
+            colorSegmentedControl,
+            memoryLabel,
+            memorySegmentedControl,
+            ramLabel,
+            ramSegmentedControl
+        ]
+        optionalViewCollection.forEach { optView in
+            if let optView = optView {
+                optView.translatesAutoresizingMaskIntoConstraints = false
+                addSubview(optView)
+            }
+        }
+        sendSubviewToBack(whiteBackgroundView)
         setupConstraints()
     }
     
     func setupItem(isInStock: Bool, isNoItemData: Bool = false) {
+        //colorSegmentedControl?.setupView()
         if isNoItemData {
-            colorSegmentedControl.selectedSegmentIndex = item.itemGroup.colors?.firstIndex(of: item.color) ?? 0
-            memorySegmentedControl.selectedSegmentIndex = item.itemGroup.memorys?.firstIndex(of: item.memory) ?? 0
-            ramSegmentedControl.selectedSegmentIndex = item.itemGroup.rams?.firstIndex(of: item.ram) ?? 0
+//            if viewDesign.hasColorSegmentedView {
+//                colorSegmentedControl.selectedSegmentIndex = item.itemGroup.colors.firstIndex(of: item.color)
+//            }
+//            if viewDesign.hasMemorySegmentedView {
+//                memorySegmentedControl.selectedSegmentIndex = item.itemGroup.memorys.firstIndex(of: item.memory)
+//            }
+//            if viewDesign.hasMemorySegmentedView {
+//                ramSegmentedControl.selectedSegmentIndex = item.itemGroup.rams.firstIndex(of: item.ram)
+//            }
         } else {
             priceLabel.text = "\(item.price) Р"
             nameLabel.text = "\(item.brand) \(item.name), \(item.memory), \"\(item.color)\""
@@ -160,15 +205,16 @@ class ItemView: UIView {
     }
     
     func setupConstraints() {
+        
         NSLayoutConstraint.activate([
             itemImageView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
             itemImageView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width),
             itemImageView.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height * 0.50),
             
-            whiteView.topAnchor.constraint(equalTo: topAnchor),
-            whiteView.bottomAnchor.constraint(equalTo: itemImageView.bottomAnchor),
-            whiteView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            whiteView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            whiteBackgroundView.topAnchor.constraint(equalTo: topAnchor),
+            whiteBackgroundView.bottomAnchor.constraint(equalTo: itemImageView.bottomAnchor),
+            whiteBackgroundView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            whiteBackgroundView.trailingAnchor.constraint(equalTo: trailingAnchor),
 
             nameLabel.topAnchor.constraint(equalTo: itemImageView.bottomAnchor, constant: 20),
             nameLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
@@ -176,25 +222,77 @@ class ItemView: UIView {
             
             priceLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 30),
             priceLabel.leadingAnchor.constraint(equalTo: nameLabel.leadingAnchor),
-            
-            colorLabel.topAnchor.constraint(equalTo: priceLabel.bottomAnchor, constant: 30),
-            colorLabel.leadingAnchor.constraint(equalTo: priceLabel.leadingAnchor),
-            
-            colorSegmentedControl.centerYAnchor.constraint(equalTo: colorLabel.centerYAnchor),
-            colorSegmentedControl.leadingAnchor.constraint(equalTo: colorLabel.trailingAnchor, constant: 20),
-            colorSegmentedControl.widthAnchor.constraint(equalToConstant: 250),
-            colorSegmentedControl.heightAnchor.constraint(equalToConstant: 38),
-            
-            memoryLabel.topAnchor.constraint(equalTo: colorLabel.bottomAnchor, constant: 30),
-            memoryLabel.leadingAnchor.constraint(equalTo: colorLabel.leadingAnchor),
-            
-            memorySegmentedControl.centerYAnchor.constraint(equalTo: memoryLabel.centerYAnchor),
-            memorySegmentedControl.leadingAnchor.constraint(equalTo: memoryLabel.trailingAnchor, constant: 20),
-            
-            toCartButton.topAnchor.constraint(equalTo: memoryLabel.bottomAnchor, constant: 50),
-            toCartButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
-            toCartButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20)
         ])
+        
+        setupOptionalViewConstraints()
+        
+    }
+    
+    func setupOptionalViewConstraints() {
+        
+        var viewUnderPriceBottomAnchor = priceLabel.bottomAnchor
+        
+        if let colorLabel = colorLabel,
+           let colorSegmentedControl = colorSegmentedControl {
+            
+            let colorsCount = item.itemGroup.colors.count
+            let colorSegmentedControlWidthAnchor = CGFloat(colorsCount * 42)
+            
+            NSLayoutConstraint.activate([
+                colorLabel.topAnchor.constraint(equalTo: viewUnderPriceBottomAnchor, constant: 25),
+                colorLabel.leadingAnchor.constraint(equalTo: priceLabel.leadingAnchor),
+                
+                colorSegmentedControl.centerYAnchor.constraint(equalTo: colorLabel.centerYAnchor),
+                colorSegmentedControl.leadingAnchor.constraint(equalTo: colorLabel.trailingAnchor, constant: 20),
+                colorSegmentedControl.widthAnchor.constraint(equalToConstant: colorSegmentedControlWidthAnchor),
+                colorSegmentedControl.heightAnchor.constraint(equalToConstant: 38)
+            ])
+            viewUnderPriceBottomAnchor = colorSegmentedControl.bottomAnchor
+        }
+        
+        if let memoryLabel = memoryLabel,
+           let memorySegmentedControl = memorySegmentedControl {
+            
+            NSLayoutConstraint.activate([
+                memoryLabel.topAnchor.constraint(equalTo: viewUnderPriceBottomAnchor, constant: 25),
+                memoryLabel.leadingAnchor.constraint(equalTo: priceLabel.leadingAnchor),
+                
+                memorySegmentedControl.centerYAnchor.constraint(equalTo: memoryLabel.centerYAnchor),
+                memorySegmentedControl.leadingAnchor.constraint(equalTo: memoryLabel.trailingAnchor, constant: 20),
+            ])
+            viewUnderPriceBottomAnchor = memorySegmentedControl.bottomAnchor
+        }
+        
+        if let ramLabel = ramLabel,
+           let ramSegmentedControl = ramSegmentedControl {
+            
+            NSLayoutConstraint.activate([
+                ramLabel.topAnchor.constraint(equalTo: viewUnderPriceBottomAnchor, constant: 25),
+                ramLabel.leadingAnchor.constraint(equalTo: priceLabel.leadingAnchor),
+                
+                ramSegmentedControl.centerYAnchor.constraint(equalTo: ramLabel.centerYAnchor),
+                ramSegmentedControl.leadingAnchor.constraint(equalTo: ramLabel.trailingAnchor, constant: 20),
+            ])
+        }
+        
+        NSLayoutConstraint.activate([
+            toCartButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
+            toCartButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
+            toCartButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -30)
+        ])
+    }
+    
+}
+
+extension ItemView: CustomColorSegmentedViewDelegate {
+    
+    func didTapColorButton(selectedSegmentIndex: Int) {
+        guard let delegate = delegate else {
+            return
+        }
+        delegate.itemViewSegmentsValueChange(selectedSegmentColorIndex: selectedSegmentIndex,
+                                             selectedSegmentMemoryIndex: memorySegmentedControl?.selectedSegmentIndex,
+                                             selectedSegmentRamIndex: ramSegmentedControl?.selectedSegmentIndex)
     }
     
 }

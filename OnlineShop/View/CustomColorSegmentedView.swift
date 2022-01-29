@@ -7,21 +7,24 @@
 
 import UIKit
 
-class CustomColorSegmentedView: UIControl {
+protocol CustomColorSegmentedViewDelegate: AnyObject {
+    func didTapColorButton(selectedSegmentIndex: Int)
+}
+
+class CustomColorSegmentedView: UIView {
     
+    weak var itemViewDelegate: CustomColorSegmentedViewDelegate?
     var colors: [String] = []
-    var selectedSegmentIndex = 0 {
+    var selectedSegmentIndex: Int {
         willSet {
-            colorButtons[selectedSegmentIndex].layer.borderWidth = 0
-            colorButtons[selectedSegmentIndex].layer.borderColor = nil
+            colorCircleViews[selectedSegmentIndex].setupBorder(isChosen: false)
         }
         didSet {
-            colorButtons[selectedSegmentIndex].layer.borderWidth = 3
-            colorButtons[selectedSegmentIndex].layer.borderColor = UIColor(red: 1, green: 0, blue: 0, alpha: 0.5).cgColor
+            colorCircleViews[selectedSegmentIndex].setupBorder(isChosen: true)
         }
     }
     
-    lazy var colorButtons: [ColorCircleView] = {
+    lazy var colorCircleViews: [ColorCircleView] = {
         var buttons: [ColorCircleView] = []
         for index in colors.indices {
             let view = ColorCircleView(color: stringColorDic[colors[index]] ?? UIColor(), index: index)
@@ -32,16 +35,17 @@ class CustomColorSegmentedView: UIControl {
     }()
     
     lazy var colorStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: colorButtons)
+        let stackView = UIStackView(arrangedSubviews: colorCircleViews)
         stackView.axis = .horizontal
         stackView.alignment = .fill
-        stackView.distribution = .fillEqually
+        stackView.distribution = .fillProportionally
         stackView.spacing = 5
         return stackView
     }()
     
-    init(colors: [String]) {
+    init(colors: [String], selectedSegmentIndex: Int) {
         self.colors = colors
+        self.selectedSegmentIndex = selectedSegmentIndex
         super.init(frame: CGRect.zero)
         setupView()
     }
@@ -69,9 +73,11 @@ class CustomColorSegmentedView: UIControl {
 
 extension CustomColorSegmentedView: CustomColorButtonDelegate {
     
-    func colorButtonDidTap(selectedSegmentIndex: Int) {
-        self.selectedSegmentIndex = selectedSegmentIndex
-        sendActions(for: .valueChanged)
+    func didTapColorButton(selectedSegmentIndex: Int) {
+        guard let itemViewDelegate = itemViewDelegate else {
+            return
+        }
+        itemViewDelegate.didTapColorButton(selectedSegmentIndex: selectedSegmentIndex)
     }
     
 }

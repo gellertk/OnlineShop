@@ -8,7 +8,7 @@
 import UIKit
 
 protocol CustomColorButtonDelegate: AnyObject {
-    func colorButtonDidTap(selectedSegmentIndex: Int)
+    func didTapColorButton(selectedSegmentIndex: Int)
 }
 
 class CustomColorButton: UIButton {
@@ -31,7 +31,7 @@ class CustomColorButton: UIButton {
         guard let customColorSegmentedViewDelegate = customColorSegmentedViewDelegate else {
             return
         }
-        customColorSegmentedViewDelegate.colorButtonDidTap(selectedSegmentIndex: tag)
+        customColorSegmentedViewDelegate.didTapColorButton(selectedSegmentIndex: tag)
     }
     
     required init?(coder: NSCoder) {

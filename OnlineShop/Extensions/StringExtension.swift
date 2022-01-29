@@ -18,7 +18,7 @@ extension String {
         return formattedArray
     }
     
-    func convertToFormattedColorCollection() -> [String] {
+    func toArray() -> [String] {
         let formattedString = self.replacingOccurrences(of: " ", with: "")
         let formattedArray = formattedString.components(separatedBy: ",")
         return formattedArray

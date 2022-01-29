@@ -19,7 +19,6 @@ class ColorCircleView: UIView {
     
     lazy var colorButton: CustomColorButton = {
         let button = CustomColorButton(color: color, index: index)
-        //button.customColorSegmentedViewDelegate = customColorSegmentedViewDelegate
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -38,12 +37,20 @@ class ColorCircleView: UIView {
     func setupView(color: UIColor, index: Int) {
         addSubview(colorButton)
         translatesAutoresizingMaskIntoConstraints = false
-        backgroundColor = UIColor(white: 0.97, alpha: 0)
-        layer.borderColor = .init(gray: 1, alpha: 1)
-        layer.borderWidth = 3
-        layer.cornerRadius = frame.width / 2
+        setupBorder(isChosen: false)
         setupConstraints()
-        //bringSubviewToFront(colorButton)
+    }
+    
+    func setupBorder(isChosen: Bool) {
+        if isChosen {
+            layer.borderWidth = 3
+            layer.borderColor = UIColor(red: 1, green: 0, blue: 0, alpha: 0.8).cgColor
+        } else {
+            //backgroundColor = UIColor(white: 0.97, alpha: 0)
+            layer.borderColor = UIColor.lightGray.cgColor
+            layer.borderWidth = 3
+            layer.cornerRadius = frame.width / 2
+        }
     }
     
     func setupConstraints() {

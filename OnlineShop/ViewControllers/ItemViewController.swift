@@ -75,17 +75,22 @@ extension ItemViewController: ItemViewDelegate {
                                      selectedSegmentMemoryIndex: Int?,
                                      selectedSegmentRamIndex: Int?) {
 
-        let color = selectedSegmentColorIndex != nil ? item.itemGroup.colors?[selectedSegmentColorIndex!] ?? "" : ""
-        let memory = selectedSegmentMemoryIndex != nil ? item.itemGroup.memorys?[selectedSegmentMemoryIndex!] ?? "" : ""
-        let ram = selectedSegmentRamIndex != nil ? item.itemGroup.colors?[selectedSegmentRamIndex!] ?? "" : ""
+        let color = (selectedSegmentColorIndex != nil) ? item.itemGroup.colors[selectedSegmentColorIndex!] : ""
+        let memory = (selectedSegmentMemoryIndex != nil) ? item.itemGroup.memorys[selectedSegmentMemoryIndex!] : ""
+        let ram = (selectedSegmentRamIndex != nil) ? item.itemGroup.colors[selectedSegmentRamIndex!] : ""
               
         if let chosenItem = item.getFromStock(by: color, and: memory, and: ram) {
             itemView.item = chosenItem
             itemView.setupItem(isInStock: chosenItem.count > 0)
+            itemView.colorSegmentedControl?.selectedSegmentIndex = selectedSegmentColorIndex ?? 0
+            itemView.memorySegmentedControl?.selectedSegmentIndex = selectedSegmentMemoryIndex ?? 0
+            itemView.ramSegmentedControl?.selectedSegmentIndex = selectedSegmentRamIndex ?? 0
         } else {
             itemView.setupItem(isInStock: false, isNoItemData: true)
             present(outOfStockAlertController, animated: true)
         }
     }
+    
+//    func
     
 }
