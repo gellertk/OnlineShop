@@ -8,7 +8,7 @@
 import UIKit
 
 class MenuViewController: UIViewController {
-
+    
     lazy var menuView: UIView = {
         let view = MenuView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -16,8 +16,8 @@ class MenuViewController: UIViewController {
     }()
     
     override func viewDidLoad() {
+        GoogleApiClient().updateItemGroups()
         super.viewDidLoad()
-        GoogleApiClient().getItems()
         setupView()
     }
     

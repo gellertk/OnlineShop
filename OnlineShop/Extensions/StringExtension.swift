@@ -9,16 +9,10 @@ import Foundation
 
 extension String {
     
-    func convertToFormattedMemoryCollection() -> [String] {
-        let formattedString = self.replacingOccurrences(of: " ", with: "")
-        var formattedArray = formattedString.components(separatedBy: ",")
-        for index in formattedArray.indices {
-            formattedArray[index] = formattedArray[index].getFormattedSize()
-        }
-        return formattedArray
-    }
-    
     func toArray() -> [String] {
+        guard self != "" else {
+            return []
+        }
         let formattedString = self.replacingOccurrences(of: " ", with: "")
         let formattedArray = formattedString.components(separatedBy: ",")
         return formattedArray

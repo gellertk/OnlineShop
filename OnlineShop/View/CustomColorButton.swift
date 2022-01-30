@@ -27,6 +27,16 @@ class CustomColorButton: UIButton {
         tag = index
     }
     
+    func setEnabled(_ enabled: Bool) {
+        if enabled {
+            addTarget(self, action: #selector(colorButtonDidTap(sender:)), for: .touchUpInside)
+            alpha = 1
+        } else {
+            removeTarget(nil, action: nil, for: .touchUpInside)
+            alpha = 0.2
+        }
+    }
+    
     @objc func colorButtonDidTap(sender: CustomColorButton) {
         guard let customColorSegmentedViewDelegate = customColorSegmentedViewDelegate else {
             return

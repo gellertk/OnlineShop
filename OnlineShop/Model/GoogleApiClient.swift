@@ -7,70 +7,110 @@
 
 import GoogleAPIClientForREST
 
-var itemTree: [ItemGroup] = []
+final class GoogleApiClient: GTLRSheetsService {
+    
+    static var items: [ItemGroup] = []
+    
+    private struct Constants {
+        static let apiKey = "AIzaSyCKgh7usvAbBPAHT-PaIQPsIA2g9g8AEjI"
+        static let spreadsheetId = "1DiuUKftlliXP-y6TS8qHruHyxlWesbcUhamzK6bG42s"
+        public static let rangeItemGroups = "Groups"
+        public static let rangeItems = "Items"
+    }
+    
+    override init() {
+        super.init()
+        self.apiKey = Constants.apiKey
+    }
+    
+    //completion: @escaping (Result<[ItemGroup], Error>) -> Void
+    
+    public func updateItemGroups() {
+        
+        let query = GTLRSheetsQuery_SpreadsheetsValuesGet.query(withSpreadsheetId: Constants.spreadsheetId,
+                                                                range: Constants.rangeItemGroups)
+        
+        //let semaphore = DispatchSemaphore(value: 1)
 
-class GoogleApiClient: NSObject {
-    
-    var itemList: [ItemGroup] = []
-    
-    func getItems() {
-        let service = GTLRSheetsService()
-        let spreadsheetId = "1DiuUKftlliXP-y6TS8qHruHyxlWesbcUhamzK6bG42s"
-        service.apiKey = "AIzaSyCKgh7usvAbBPAHT-PaIQPsIA2g9g8AEjI"
-        let query = GTLRSheetsQuery_SpreadsheetsValuesBatchGet.query(withSpreadsheetId: spreadsheetId)
-        query.ranges = ["Groups", "Items"]
-        service.executeQuery(query, delegate: self, didFinish: #selector(displayResultWithTicket(ticket:finishedWithObject:error:)))
-    }
-    
-    @objc func displayResultWithTicket(ticket: GTLRServiceTicket, finishedWithObject: GTLRSheets_BatchGetValuesResponse, error: NSError?) {
-        if let error = error {
-            print(error.localizedDescription)
-            return
+        self.executeQuery(query) { [weak self] ticket, result, error in
+            if let error = error {
+                print(error.localizedDescription)
+                return
+            }
+            guard let result = result as? GTLRSheets_ValueRange,
+                  let groupsListValues = result.values as? [[String]],
+                  let self = self else {
+                      return
+                  }
+            self.fillItemGroups(groupsListValues: groupsListValues)
+            //semaphore.signal()
         }
-        guard let groupsListValues = finishedWithObject.valueRanges?.first?.values as? [[String]],
-              let itemsListValues = finishedWithObject.valueRanges?.last?.values as? [[String]] else {
-                  return
-              }
-        fillItems(groupsListValues: groupsListValues, itemsListValues: itemsListValues)
+        //_ = semaphore.wait(wallTimeout: .distantFuture)
+        //semaphore.wait(timeout: .distantFuture)
     }
     
-    func fillItems(groupsListValues: [[String]], itemsListValues: [[String]]) {
+    private func updateItems(itemGroup: ItemGroup) {
+        
+        let query = GTLRSheetsQuery_SpreadsheetsValuesGet.query(withSpreadsheetId: Constants.spreadsheetId,
+                                                                range: Constants.rangeItems)
+
+        self.executeQuery(query) { [weak self] ticket, result, error in
+            if let error = error {
+                print(error.localizedDescription)
+                return
+            }
+            guard let result = result as? GTLRSheets_ValueRange,
+                  let items = result.values as? [[String]],
+                  let self = self else {
+                      return
+            }
+            self.fill(group: itemGroup, with: items)
+        }
+    }
+
+    private func fillItemGroups(groupsListValues: [[String]]) {
+        
+        var itemList: [ItemGroup] = []
         let groupKeys: [String] = groupsListValues.first ?? []
-        let itemKeys: [String] = itemsListValues.first ?? []
+        
         for rowGroups in groupsListValues {
             if rowGroups == groupsListValues.first {
                 continue
             }
-            let groupCurrentValues = rowGroups.convertToDictionary(keys: groupKeys)
-            let currentGroup = ItemGroup(name: groupCurrentValues["Group name"] ?? "",
-                                         imgName: groupCurrentValues["Image name"] ?? "",
+            let currentRowValues = rowGroups.convertToDictionary(keys: groupKeys)
+            let currentGroup = ItemGroup(name: currentRowValues["Group name"] ?? "",
+                                         imgName: currentRowValues["Image name"] ?? "",
                                          items: [ItemGroup](),
-                                         memorys: groupCurrentValues["Memorys"] ?? "",
-                                         colors: groupCurrentValues["Colors"] ?? "",
-                                         rams: groupCurrentValues["Rams"] ?? "")
+                                         memorys: currentRowValues["Memorys"] ?? "",
+                                         colors: currentRowValues["Colors"] ?? "",
+                                         rams: currentRowValues["Rams"] ?? "")
             itemList.append(currentGroup)
-            if let itemGroup = itemList.first(where: {$0.name == groupCurrentValues["Parent"]}) {
+            if let itemGroup = itemList.first(where: {$0.name == currentRowValues["Parent"]}) {
                 itemGroup.items.append(currentGroup)
-                if groupCurrentValues["Is item"] == "TRUE" {
-                    for rowItems in itemsListValues {
-                        if rowItems == itemsListValues.first {
-                            continue
-                        }
-                        if rowItems.contains(currentGroup.name) {
-                            let itemCurrentValues = rowItems.convertToDictionary(keys: itemKeys)
-                            currentGroup.items.append(Item(brand: itemCurrentValues["Company"] ?? "",
-                                                           name: itemCurrentValues["Name"] ?? "",
-                                                           itemGroup: currentGroup,
-                                                           color: itemCurrentValues["Color"] ?? "",
-                                                           price: itemCurrentValues["Price"] ?? "",
-                                                           memory: itemCurrentValues["Memory"] ?? "",
-                                                           ram: itemCurrentValues["Ram"] ?? "",
-                                                           count: itemCurrentValues["Count"] ?? ""))
-                        }
-                    }
-                }
             } else {
-                itemTree.append(currentGroup)
+                GoogleApiClient.items.append(currentGroup)
+            }
+        }
+    }
+    
+    private func fill(group itemGroup: ItemGroup, with itemsListValues: [[String]]) {
+        
+        let itemKeys: [String] = itemsListValues.first ?? []
+        
+        for rowItems in itemsListValues {
+            if rowItems == itemsListValues.first {
+                continue
+            }
+            if rowItems.contains(itemGroup.name) {
+                let itemCurrentValues = rowItems.convertToDictionary(keys: itemKeys)
+                itemGroup.items.append(Item(brand: itemCurrentValues["Company"] ?? "",
+                                               name: itemCurrentValues["Name"] ?? "",
+                                               itemGroup: itemGroup,
+                                               color: itemCurrentValues["Color"] ?? "",
+                                               price: itemCurrentValues["Price"] ?? "",
+                                               memory: itemCurrentValues["Memory"] ?? "",
+                                               ram: itemCurrentValues["Ram"] ?? "",
+                                               count: itemCurrentValues["Count"] ?? ""))
             }
         }
     }

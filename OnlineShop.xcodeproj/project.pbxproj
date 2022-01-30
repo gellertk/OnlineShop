@@ -25,6 +25,8 @@
 		CBCB2FBA279C1BFD00395EFB /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBCB2FB9279C1BFD00395EFB /* StringExtension.swift */; };
 		CBCB2FBD279C3FA600395EFB /* CustomColorSegmentedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBCB2FBC279C3FA600395EFB /* CustomColorSegmentedView.swift */; };
 		CBD8CAED2793273F00D04571 /* GoogleApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD8CAEC2793273F00D04571 /* GoogleApiClient.swift */; };
+		CBE055A127A5E516003B4B6A /* CartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE055A027A5E516003B4B6A /* CartView.swift */; };
+		CBE055A327A5E896003B4B6A /* CartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE055A227A5E896003B4B6A /* CartViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -63,6 +65,8 @@
 		CBCB2FB9279C1BFD00395EFB /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		CBCB2FBC279C3FA600395EFB /* CustomColorSegmentedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomColorSegmentedView.swift; sourceTree = "<group>"; };
 		CBD8CAEC2793273F00D04571 /* GoogleApiClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleApiClient.swift; sourceTree = "<group>"; };
+		CBE055A027A5E516003B4B6A /* CartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartView.swift; sourceTree = "<group>"; };
+		CBE055A227A5E896003B4B6A /* CartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,6 +135,7 @@
 				CB6A8AB3279724B60035C4D5 /* MenuViewController.swift */,
 				CBC17B26278B2A4B00339DE1 /* CatalogViewController.swift */,
 				CB15203C279B69C1009BD006 /* ItemViewController.swift */,
+				CBE055A227A5E896003B4B6A /* CartViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -145,6 +150,7 @@
 				CBCB2FBC279C3FA600395EFB /* CustomColorSegmentedView.swift */,
 				CB0E6CBC27A31971006C702E /* CustomColorButton.swift */,
 				CB0E6CBA27A3194B006C702E /* ColorCircleView.swift */,
+				CBE055A027A5E516003B4B6A /* CartView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -294,6 +300,7 @@
 				CB15203D279B69C1009BD006 /* ItemViewController.swift in Sources */,
 				CBC17B27278B2A4B00339DE1 /* CatalogViewController.swift in Sources */,
 				CBC17B39278B42FF00339DE1 /* CatalogView.swift in Sources */,
+				CBE055A127A5E516003B4B6A /* CartView.swift in Sources */,
 				CBCB2FBA279C1BFD00395EFB /* StringExtension.swift in Sources */,
 				CB6A8AB0279720820035C4D5 /* MenuView.swift in Sources */,
 				CB15203B279B4D2C009BD006 /* ItemView.swift in Sources */,
@@ -306,6 +313,7 @@
 				CBC17B25278B2A4B00339DE1 /* SceneDelegate.swift in Sources */,
 				CB7DB16927A1C02400454600 /* ArrayExtension.swift in Sources */,
 				CBD8CAED2793273F00D04571 /* GoogleApiClient.swift in Sources */,
+				CBE055A327A5E896003B4B6A /* CartViewController.swift in Sources */,
 				CB6A8AB4279724B60035C4D5 /* MenuViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -41,12 +41,16 @@ class ColorCircleView: UIView {
         setupConstraints()
     }
     
+    func setEnabled(_ enabled: Bool) {
+        alpha = enabled ? 1 : 0.2
+        colorButton.setEnabled(enabled)
+    }
+    
     func setupBorder(isChosen: Bool) {
         if isChosen {
             layer.borderWidth = 3
             layer.borderColor = UIColor(red: 1, green: 0, blue: 0, alpha: 0.8).cgColor
         } else {
-            //backgroundColor = UIColor(white: 0.97, alpha: 0)
             layer.borderColor = UIColor.lightGray.cgColor
             layer.borderWidth = 3
             layer.cornerRadius = frame.width / 2

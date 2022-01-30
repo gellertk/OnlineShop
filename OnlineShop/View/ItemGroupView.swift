@@ -41,7 +41,7 @@ class ItemGroupView: UIView {
         layer.shadowOffset = CGSize(width: 2, height: 2)
         layer.shadowOpacity = 0.6
         layer.shadowRadius = 5
-        layer.cornerRadius = 15
+        layer.cornerRadius = 10
         translatesAutoresizingMaskIntoConstraints = false
         backgroundColor = .white
         [itemImageView, itemNameLabel].forEach { newView in

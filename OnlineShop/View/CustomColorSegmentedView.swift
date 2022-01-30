@@ -54,7 +54,12 @@ class CustomColorSegmentedView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func setEnabled(_ enabled: Bool, forSegmentAt segment: Int) {
+        colorCircleViews[segment].setEnabled(enabled)
+    }
+    
     func setupView() {
+        colorCircleViews[selectedSegmentIndex].setupBorder(isChosen: true)
         colorStackView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(colorStackView)
         setupConstraints()
@@ -74,7 +79,8 @@ class CustomColorSegmentedView: UIView {
 extension CustomColorSegmentedView: CustomColorButtonDelegate {
     
     func didTapColorButton(selectedSegmentIndex: Int) {
-        guard let itemViewDelegate = itemViewDelegate else {
+        guard let itemViewDelegate = itemViewDelegate,
+              self.selectedSegmentIndex != selectedSegmentIndex else {
             return
         }
         itemViewDelegate.didTapColorButton(selectedSegmentIndex: selectedSegmentIndex)

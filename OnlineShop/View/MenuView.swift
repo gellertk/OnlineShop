@@ -8,9 +8,7 @@
 import UIKit
 
 class MenuView: UIView {
-    
-    var items: [ItemGroup]?
-    
+        
     lazy var catalogButton: UIButton = {
         var button = UIButton()
         button.setTitle("Каталог", for: .normal)
@@ -20,10 +18,11 @@ class MenuView: UIView {
     }()
     
     @objc func didTapCatalogButton(sender: UIButton) {
-        guard itemTree.count > 0 else {
+        let items = GoogleApiClient.items
+        guard items.count > 0 else {
             return
         }
-        let catalogViewController = CatalogViewController(items: itemTree)
+        let catalogViewController = CatalogViewController(items: items)
         if let navigationController = window?.rootViewController as? UINavigationController {
             navigationController.pushViewController(catalogViewController, animated: true)
         }
@@ -31,11 +30,11 @@ class MenuView: UIView {
     
     init() {
         super.init(frame: CGRect.zero)
-        backgroundColor = .lightGray
         setupView()
     }
     
     func setupView() {
+        backgroundColor = .lightGray
         [catalogButton].forEach { newView in
             newView.translatesAutoresizingMaskIntoConstraints = false
             addSubview(newView)

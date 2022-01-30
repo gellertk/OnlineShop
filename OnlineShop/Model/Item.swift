@@ -22,18 +22,19 @@ class ItemGroup {
          memorys: String = "",
          colors: String = "",
          rams: String = "") {
+        
         self.name = name
         self.colors = colors.toArray()
         self.imgName = imgName
         self.items = items
-        self.memorys = memorys.convertToFormattedMemoryCollection()
+        self.memorys = memorys.toArray()
         self.rams = rams.toArray()
     }
     
 }
 
 class Item: ItemGroup {
-    
+
     let brand: String
     let price: Int
     let memory: String
@@ -55,7 +56,7 @@ class Item: ItemGroup {
         self.itemGroup = itemGroup
         self.color = color
         self.price = Int(price) ?? 0
-        self.memory = memory.getFormattedSize()
+        self.memory = memory
         self.ram = ram
         self.count = Int(count) ?? 0
         super.init(name: name, imgName: "\(name) \(color)", items: [ItemGroup]())
